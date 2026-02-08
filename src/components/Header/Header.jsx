@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings, FileText, Cloud, Loader2, AlertCircle, Languages } from 'lucide-react';
+import { Settings, FileText, Cloud, Loader2, AlertCircle, Languages, Maximize2, MonitorPlay } from 'lucide-react';
 import ModeSelector from './ModeSelector';
 import ActionButtons from './ActionButtons';
 import languages from '../../constants/languages';
@@ -20,7 +20,10 @@ const Header = ({
     onToggleScriptEditor,
     saveStatus,
     currentLanguage,
-    onLanguageChange
+    onLanguageChange,
+    onToggleFullscreen,
+    onOpenPresentation,
+    isPresentationMode
 }) => {
     // Sync status indicator
     const SyncIndicator = () => {
@@ -77,6 +80,27 @@ const Header = ({
                         manualSpeed={manualSpeed}
                         onSpeedChange={onSpeedChange}
                     />
+
+                    {/* Presentation Mode Button */}
+                    <button
+                        onClick={onOpenPresentation}
+                        className={`p-2 rounded-lg border border-gray-700 transition-colors ${isPresentationMode
+                                ? 'bg-purple-600 text-white border-purple-500'
+                                : 'bg-gray-800 text-gray-400 hover:text-white'
+                            }`}
+                        title="프리젠테이션 모드"
+                    >
+                        <MonitorPlay size={20} />
+                    </button>
+
+                    {/* Fullscreen Button */}
+                    <button
+                        onClick={onToggleFullscreen}
+                        className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-700 text-gray-400 hover:text-white transition-colors"
+                        title="전체화면"
+                    >
+                        <Maximize2 size={20} />
+                    </button>
 
                     {/* Language Selector */}
                     <div className="relative group">

@@ -17,6 +17,9 @@ export const parseMarkdown = (text) => {
     // Replace __underline__
     text = text.replace(/__([^_]+)__/g, '<u>$1</u>');
 
+    // Replace ~~script~~ (Sanskrit)
+    text = text.replace(/~~([^~]+)~~/g, '<span class="script-text">$1</span>');
+
     return text;
 };
 

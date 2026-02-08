@@ -12,6 +12,12 @@
   }
 }
 
+/* Script text styling */
+.script-text {
+  font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  line-height: 1.8;
+}
+
 body {
   margin: 0;
   padding: 0;

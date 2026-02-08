@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FileText, Upload, X, Check } from 'lucide-react';
-import { handleFileUpload } from '../../utils/fileHandler';
+import { FileText, Upload, X, Check, Download } from 'lucide-react';
+import { handleFileUpload, downloadTextFile } from '../../utils/fileHandler';
 
 const ScriptEditor = ({ isOpen, scriptText, onSave, onClose }) => {
     const [editingText, setEditingText] = useState('');
@@ -41,6 +41,10 @@ const ScriptEditor = ({ isOpen, scriptText, onSave, onClose }) => {
         onSave(editingText);
     };
 
+    const handleDownload = () => {
+        downloadTextFile(editingText, 'script.txt');
+    };
+
     return (
         <div className="absolute left-0 right-0 top-0 bottom-0 pt-20 bg-gray-900/95 backdrop-blur-sm z-50 p-6 flex justify-center animate-in fade-in duration-200">
             <div className="w-full max-w-4xl bg-gray-800 rounded-xl border border-gray-700 shadow-2xl flex flex-col overflow-hidden">
@@ -53,6 +57,13 @@ const ScriptEditor = ({ isOpen, scriptText, onSave, onClose }) => {
                             <Upload size={14} /> TXT 파일 불러오기
                             <input type="file" accept=".txt" onChange={handleFileChange} className="hidden" />
                         </label>
+                        <button
+                            onClick={handleDownload}
+                            className="flex items-center gap-2 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm transition-colors text-gray-300"
+                            title="다운로드"
+                        >
+                            <Download size={14} />
+                        </button>
                         <button onClick={onClose} className="p-1.5 hover:bg-gray-700 rounded-lg text-gray-400">
                             <X size={20} />
                         </button>

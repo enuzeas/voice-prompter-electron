@@ -7,33 +7,37 @@ import PrompterDisplay from './components/Prompter/PrompterDisplay';
 import useIndexedDB from './hooks/useIndexedDB';
 import useSpeechRecognition from './hooks/useSpeechRecognition';
 import useAutoScroll from './hooks/useAutoScroll';
+import usePresentationMode from './hooks/usePresentationMode';
 import { processScriptToWords } from './utils/wordProcessing';
 import keyboardHandler from './utils/keyboardHandler';
+import { downloadTextFile } from './utils/fileHandler';
 import defaultScript from './constants/defaultScript';
 
 const App = () => {
-    // Mode and UI state
-    const [mode, setMode] = useState('voice');
-    const [showSettings, setShowSettings] = useState(false);
-    const [showScriptEditor, setShowScriptEditor] = useState(false);
-    const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
+// Mode and UI state
+const [mode, setMode] = useState('voice');
+const [showSettings, setShowSettings] = useState(false);
+const [showScriptEditor, setShowScriptEditor] = useState(false);
+const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
 
-    // Refs
-    const containerRef = useRef(null);
+// Refs
+const containerRef = useRef(null);
+const audioDeviceSelectorRef = useRef(null);
 
-    // IndexedDB persistence
-    const { config, updateConfig, saveStatus } = useIndexedDB({
-        scriptText: defaultScript,
-        fontSize: 48,
-        letterSpacing: 0,
-        isSerif: false,
-        lineHeight: 1.6,
-        manualSpeed: 3,
-        language: 'ko-KR'
-    });
+// IndexedDB persistence
+const { config, updateConfig, saveStatus } = useIndexedDB({
+    scriptText: defaultScript,
+    fontSize: 48,
+    letterSpacing: 0,
+    isSerif: false,
+    lineHeight: 1.6,
+    manualSpeed: 3,
+    language: 'ko-KR',
+    audioDeviceId: 'default'
+});
 
-    // Derived state from config
-    const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed } = config;
+// Derived state from config
+const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, audioDeviceId } = config;
 
     // Process script to words
     const words = useMemo(() => processScriptToWords(scriptText), [scriptText]);
@@ -48,6 +52,23 @@ const App = () => {
         resetPosition: resetSpeechPosition,
         setLanguage: setSpeechLanguage
     } = useSpeechRecognition(words, currentLanguage);
+
+    // Presentation mode
+    const {
+        isPresentationMode,
+        isPresentationWindow,
+        presentationActiveIndex,
+        openPresentation,
+        closePresentation,
+        updatePresentationIndex
+    } = usePresentationMode({ words, settings: config });
+
+    // Sync active index with presentation window
+    useEffect(() => {
+        if (isPresentationMode) {
+            updatePresentationIndex(activeIndex);
+        }
+    }, [activeIndex, isPresentationMode, updatePresentationIndex]);
 
     // Auto scroll
     const {
@@ -100,6 +121,34 @@ const App = () => {
         updateConfig({ language: newLang });
     };
 
+    // Fullscreen toggle
+    const handleToggleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log('Fullscreen request failed:', err);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    };
+
+    // File save handler (Ctrl+S)
+    const handleFileSave = () => {
+        downloadTextFile(scriptText, 'script.txt');
+    };
+
+    // Audio device change handler
+    const handleDeviceChange = (deviceId) => {
+        updateConfig({ audioDeviceId: deviceId });
+    };
+
+    // Stream ready handler for speech recognition
+    const handleStreamReady = (stream) => {
+        // Pass stream to speech service if needed
+        // Currently speech.service uses default device, but we could extend it
+        console.log('Audio stream ready:', stream);
+    };
+
     // Keyboard shortcuts
     useEffect(() => {
         keyboardHandler.register('RESET', handleReset);
@@ -122,6 +171,15 @@ const App = () => {
             setShowSettings(false);
             setShowScriptEditor(false);
         });
+        keyboardHandler.register('FULLSCREEN', handleToggleFullscreen);
+        keyboardHandler.register('PRESENTATION_MODE', () => {
+            if (isPresentationMode) {
+                closePresentation();
+            } else {
+                openPresentation();
+            }
+        });
+        keyboardHandler.register('SAVE_FILE', handleFileSave);
 
         keyboardHandler.start();
 
@@ -129,7 +187,26 @@ const App = () => {
             keyboardHandler.stop();
             keyboardHandler.clear();
         };
-    }, [mode, toggleListening, togglePlay, handleReset]);
+    }, [mode, toggleListening, togglePlay, handleReset, isPresentationMode, openPresentation, closePresentation]);
+
+    // If running in presentation window, show only prompter display
+    if (isPresentationWindow) {
+        return (
+            <div className={`flex flex-col h-screen bg-black text-white`}>
+                <PrompterDisplay
+                    containerRef={containerRef}
+                    words={words}
+                    mode={mode}
+                    activeIndex={presentationActiveIndex}
+                    fontSize={fontSize}
+                    letterSpacing={letterSpacing}
+                    lineHeight={lineHeight}
+                    isSerif={isSerif}
+                    wordRefs={wordRefs}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className={`flex flex-col h-screen bg-black text-white`}>
@@ -156,6 +233,9 @@ const App = () => {
                 saveStatus={saveStatus}
                 currentLanguage={currentLanguage}
                 onLanguageChange={handleLanguageChange}
+                onToggleFullscreen={handleToggleFullscreen}
+                onOpenPresentation={isPresentationMode ? closePresentation : openPresentation}
+                isPresentationMode={isPresentationMode}
             />
 
             {/* Settings Panel */}
@@ -167,6 +247,9 @@ const App = () => {
                     onLetterSpacingChange={(spacing) => updateConfig({ letterSpacing: spacing })}
                     isSerif={isSerif}
                     onFontFamilyChange={(serif) => updateConfig({ isSerif: serif })}
+                    selectedDeviceId={audioDeviceId}
+                    onDeviceChange={handleDeviceChange}
+                    onStreamReady={handleStreamReady}
                 />
             )}
 

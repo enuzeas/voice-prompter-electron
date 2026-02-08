@@ -1,5 +1,6 @@
 import React from 'react';
-import { Scaling, MoveVertical, Type } from 'lucide-react';
+import { Scaling, MoveVertical, Type, Mic } from 'lucide-react';
+import AudioDeviceSelector from './AudioDeviceSelector';
 
 const SettingsPanel = ({
     fontSize,
@@ -7,10 +8,27 @@ const SettingsPanel = ({
     letterSpacing,
     onLetterSpacingChange,
     isSerif,
-    onFontFamilyChange
+    onFontFamilyChange,
+    selectedDeviceId,
+    onDeviceChange,
+    onStreamReady
 }) => {
     return (
         <div className="px-6 py-4 bg-gray-800/50 backdrop-blur border-t border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
+            {/* Audio Device Selector */}
+            <div className="md:col-span-3 pb-4 border-b border-gray-700 mb-2">
+                <div className="flex items-center justify-between text-xs text-gray-400 font-bold uppercase mb-2">
+                    <span className="flex items-center gap-1">
+                        <Mic size={12} /> 마이크 설정
+                    </span>
+                </div>
+                <AudioDeviceSelector
+                    selectedDeviceId={selectedDeviceId}
+                    onDeviceChange={onDeviceChange}
+                    onStreamReady={onStreamReady}
+                />
+            </div>
+
             {/* Font Size */}
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs text-gray-400 font-bold uppercase">
@@ -77,6 +95,7 @@ const SettingsPanel = ({
                     </button>
                 </div>
             </div>
+
         </div>
     );
 };
