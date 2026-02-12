@@ -17,12 +17,9 @@ const WordRenderer = ({
         return <br key={index} className="block" style={{ marginBottom: `${fontSize * 0.8}px` }} />;
     }
 
-    // Styling logic
-    let colorClass = 'text-gray-400';
-    let opacity = 1;
-    let blur = 0;
-    let scale = 1;
-    let isHighlighted = false;
+    // Parse markdown for visual display (move up to avoid ReferenceError in branches)
+    const parsedWord = parseMarkdown(word);
+    const hasMarkdown = parsedWord !== word;
 
     if (mode === 'voice') {
         const isActive = index === activeIndex;
