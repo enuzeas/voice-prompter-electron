@@ -7,10 +7,10 @@ import { matchSpokenText } from '../services/textMatching.service';
  */
 const useSpeechRecognition = (words, language = 'ko-KR') => {
     const [isListening, setIsListening] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(-1);
     const [error, setError] = useState('');
 
-    const activeIndexRef = useRef(0);
+    const activeIndexRef = useRef(-1);
     const isListeningRef = useRef(false);
     const wordRefs = useRef([]);
 
@@ -112,8 +112,8 @@ const useSpeechRecognition = (words, language = 'ko-KR') => {
 
     // Reset position
     const resetPosition = useCallback(() => {
-        activeIndexRef.current = 0;
-        setActiveIndex(0);
+        activeIndexRef.current = -1;
+        setActiveIndex(-1);
     }, []);
 
     // Change language

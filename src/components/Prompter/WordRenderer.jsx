@@ -30,11 +30,11 @@ const WordRenderer = ({
     let transitionDuration = 'duration-150';
 
     if (mode === 'voice') {
-        const isActive = index === activeIndex;
-        const isUpcoming = index > activeIndex && index <= activeIndex + 15;
-        const isPassed = index < activeIndex;
+        const isActiveTarget = index === activeIndex + 1;
+        const isUpcoming = index > activeIndex + 1 && index <= activeIndex + 15;
+        const isPassed = index <= activeIndex;
 
-        if (isActive) {
+        if (isActiveTarget) {
             isHighlighted = true;
             colorClass = 'text-yellow-400';
             scale = 1.1;
