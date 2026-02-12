@@ -5,6 +5,7 @@ import SettingsPanel from './components/Settings/SettingsPanel';
 import ScriptEditor from './components/ScriptEditor/ScriptEditor';
 import PrompterDisplay from './components/Prompter/PrompterDisplay';
 import ShortcutModal from './components/Help/ShortcutModal';
+import SEO from './components/Common/SEO';
 import useIndexedDB from './hooks/useIndexedDB';
 import useSpeechRecognition from './hooks/useSpeechRecognition';
 import useAutoScroll from './hooks/useAutoScroll';
@@ -61,7 +62,8 @@ const App = () => {
         wordRefs,
         toggleListening,
         resetPosition: resetSpeechPosition,
-        setLanguage: setSpeechLanguage
+        setLanguage: setSpeechLanguage,
+        setSpeechIndex
     } = useSpeechRecognition(words, currentLanguage);
 
     // Presentation mode
@@ -236,7 +238,16 @@ const App = () => {
     }
 
     return (
-        <div className={`flex flex-col h-screen bg-black text-white`}>
+        <div className="flex flex-col h-screen bg-black text-white relative overflow-hidden">
+            <SEO
+                title={
+                    mode === 'voice' && isListening ? 'Listening... - Focus Prompter' :
+                        mode === 'manual' && isPlaying ? 'Playing... - Focus Prompter' :
+                            'Focus Prompter'
+                }
+            />
+
+            {/* Keyboard Shortcuts Modal */}
             <Header
                 mode={mode}
                 onModeChange={handleModeChange}
@@ -315,6 +326,11 @@ const App = () => {
                 isSerif={isSerif}
                 wordRefs={wordRefs}
                 isMirrored={false} // Operator view always normal
+                onWordClick={(index) => {
+                    if (mode === 'voice') {
+                        setSpeechIndex(index - 1); // Set to index before target to make target next
+                    }
+                }}
             />
         </div>
     );

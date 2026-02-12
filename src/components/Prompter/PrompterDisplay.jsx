@@ -11,7 +11,8 @@ const PrompterDisplay = ({
     lineHeight,
     isSerif,
     wordRefs,
-    isMirrored
+    isMirrored,
+    onWordClick
 }) => {
     return (
         <div
@@ -51,6 +52,7 @@ const PrompterDisplay = ({
                         letterSpacing={letterSpacing}
                         lineHeight={lineHeight}
                         wordRef={(el) => (wordRefs.current[index] = el)}
+                        onWordClick={onWordClick}
                     />
                 ))}
             </div>

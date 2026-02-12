@@ -9,7 +9,8 @@ const WordRenderer = ({
     fontSize,
     letterSpacing,
     lineHeight,
-    wordRef
+    wordRef,
+    onWordClick
 }) => {
     const isNewLine = word === "\n";
 
@@ -63,7 +64,7 @@ const WordRenderer = ({
         <span
             key={index}
             ref={wordRef}
-            className={`inline-block transition-all ease-out ${transitionDuration} ${colorClass}`}
+            className={`inline-block transition-all ease-out ${transitionDuration} ${colorClass} ${mode === 'voice' ? 'cursor-pointer hover:underline' : ''}`}
             style={{
                 fontSize: `${fontSize}px`,
                 letterSpacing: `${letterSpacing}px`,
@@ -75,6 +76,7 @@ const WordRenderer = ({
                 textShadow: isHighlighted ? '0 0 30px rgba(253, 224, 71, 0.6)' : 'none',
                 fontWeight: isHighlighted ? 800 : 600
             }}
+            onClick={() => onWordClick && onWordClick(index)}
             dangerouslySetInnerHTML={hasMarkdown ? { __html: parsedWord } : undefined}
         >
             {hasMarkdown ? undefined : word}

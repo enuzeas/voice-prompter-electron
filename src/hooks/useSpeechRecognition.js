@@ -121,6 +121,12 @@ const useSpeechRecognition = (words, language = 'ko-KR') => {
         speechService.setLanguage(newLanguage);
     }, []);
 
+    // Manually set speech index (Click-to-jump)
+    const setSpeechIndex = useCallback((index) => {
+        activeIndexRef.current = index;
+        setActiveIndex(index);
+    }, []);
+
     // Cleanup on unmount
     useEffect(() => {
         return () => {
@@ -137,7 +143,8 @@ const useSpeechRecognition = (words, language = 'ko-KR') => {
         stopListening,
         toggleListening,
         resetPosition,
-        setLanguage
+        setLanguage,
+        setSpeechIndex
     };
 };
 
