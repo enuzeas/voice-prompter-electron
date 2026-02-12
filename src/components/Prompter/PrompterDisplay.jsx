@@ -33,7 +33,13 @@ const PrompterDisplay = ({
             </div>
 
             {/* Text Container */}
-            <div className="max-w-4xl mx-auto text-center relative z-10 break-keep py-[40vh]">
+            <div
+                className="max-w-4xl mx-auto text-center relative z-10 break-keep py-[40vh]"
+                style={{
+                    transform: isMirrored ? 'scaleX(-1)' : 'none',
+                    transformOrigin: 'center'
+                }}
+            >
                 {words.map((word, index) => (
                     <WordRenderer
                         key={index}
@@ -41,12 +47,9 @@ const PrompterDisplay = ({
                         index={index}
                         mode={mode}
                         activeIndex={activeIndex}
-                        style={{
-                            fontSize: `${fontSize}px`,
-                            lineHeight: lineHeight,
-                            letterSpacing: `${letterSpacing}px`,
-                            transform: isMirrored ? 'scaleX(-1)' : 'none'
-                        }}
+                        fontSize={fontSize}
+                        letterSpacing={letterSpacing}
+                        lineHeight={lineHeight}
                         wordRef={(el) => (wordRefs.current[index] = el)}
                     />
                 ))}
