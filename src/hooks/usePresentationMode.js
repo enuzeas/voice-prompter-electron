@@ -1,13 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import presentationService from '../services/presentation.service';
 
 /**
  * Custom hook for presentation mode
  */
-const usePresentationMode = (scriptData, settings, onSettingsUpdate) => {
+const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex) => {
     const [isPresentationMode, setIsPresentationMode] = useState(false);
     const [presentationActiveIndex, setPresentationActiveIndex] = useState(0);
     const isPresentationWindowRef = useRef(false);
+    const presentationWindowRef = useRef(null);
 
     // Check if running in presentation window
     useEffect(() => {
@@ -87,11 +88,11 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate) => {
                 // Initial sync
                 // Note: presentationService.initialize() is called here implicitly by the new window
                 // when it loads. We just need to send the initial state.
-                presentationService.sendUpdate('update-active-index', activeIndexRef.current);
+                presentationService.sendUpdate('update-active-index', activeIndex);
                 presentationService.sendUpdate('update-settings', settings); // Also sync initial settings
             }
         }
-    }, [settings]); // Added settings to dependencies for initial sync
+    }, [settings, activeIndex]); // Added settings and activeIndex to dependencies for initial sync
 
     // Close presentation window
     const closePresentation = () => {

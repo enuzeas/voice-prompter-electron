@@ -65,7 +65,8 @@ const App = () => {
     } = usePresentationMode(
         config, // scriptData (using config as it has scriptText)
         config, // settings
-        updateConfig // onSettingsUpdate
+        updateConfig, // onSettingsUpdate
+        activeIndex // activeIndex
     );
 
     // Sync active index with presentation window

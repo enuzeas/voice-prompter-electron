@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, MicOff, RefreshCw } from 'lucide-react';
 import audioDeviceService from '../../services/audioDevice.service';
-import AudioLevelMeter from './AudioLevelMeter';
 
 /**
  * Audio Device Selector Component
@@ -29,11 +27,11 @@ const AudioDeviceSelector = ({ selectedDeviceId, onDeviceChange, onStreamReady }
     const loadDevices = async () => {
         setIsLoading(true);
         setError('');
-        
+
         try {
             const audioDevices = await audioDeviceService.getAudioDevices();
             setDevices(audioDevices);
-            
+
             if (audioDevices.length === 0) {
                 setError('마이크 장치를 찾을 수 없습니다.');
             }
@@ -53,7 +51,7 @@ const AudioDeviceSelector = ({ selectedDeviceId, onDeviceChange, onStreamReady }
                     setAudioLevel(level);
                 }
             );
-            
+
             // Get stream for speech recognition
             const stream = audioDeviceService.getCurrentStream();
             if (stream && onStreamReady) {
@@ -72,20 +70,7 @@ const AudioDeviceSelector = ({ selectedDeviceId, onDeviceChange, onStreamReady }
     };
 
     return (
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white font-bold flex items-center gap-2">
-                    <Mic size={20} className="text-blue-400" />
-                    마이크 선택
-                </h3>
-                <button
-                    onClick={loadDevices}
-                    className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-400 hover:text-white transition-colors"
-                    title="장치 목록 새로고침"
-                >
-                    <RefreshCw size={18} />
-                </button>
-            </div>
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-3">
 
             {/* Error Message */}
             {error && (
@@ -101,44 +86,45 @@ const AudioDeviceSelector = ({ selectedDeviceId, onDeviceChange, onStreamReady }
                 </div>
             )}
 
-            {/* Device List */}
+            {/* Device List & Meter */}
             {!isLoading && devices.length > 0 && (
-                <div className="space-y-2">
-                    {devices.map((device) => (
-                        <button
-                            key={device.deviceId}
-                            onClick={() => handleDeviceChange(device.deviceId)}
-                            className={`w-full px-4 py-3 rounded-lg text-left transition-all ${
-                                selectedDeviceId === device.deviceId
-                                    ? 'bg-blue-600 text-white border-blue-500'
-                                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border-gray-600'
-                            } border`}
+                <div className="flex items-center gap-3">
+                    <div className="flex-1 relative">
+                        <select
+                            value={selectedDeviceId}
+                            onChange={(e) => handleDeviceChange(e.target.value)}
+                            className="w-full appearance-none bg-gray-700 text-white border border-gray-600 rounded-lg py-2 pl-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-                            <div className="flex flex-col gap-2">
-                                <div className="flex items-center justify-between">
-                                    <span className="truncate">{device.label}</span>
-                                    {selectedDeviceId === device.deviceId && (
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                                            <span className="text-xs text-green-400">연결됨</span>
-                                        </div>
-                                    )}
-                                </div>
-                                {selectedDeviceId === device.deviceId && (
-                                    <AudioLevelMeter level={audioLevel} />
-                                )}
-                            </div>
-                        </button>
-                    ))}
+                            {devices.map((device) => (
+                                <option key={device.deviceId} value={device.deviceId}>
+                                    {device.label || `Microphone ${device.deviceId}`}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                        </div>
+                    </div>
+
+                    {/* Compact Audio Meter */}
+                    <div className="w-24 flex items-center gap-2 bg-gray-900/50 px-2 py-1 rounded border border-gray-700 h-10" title="오디오 입력 레벨">
+                        <div className="flex-1 h-2 bg-gray-600 rounded-full overflow-hidden">
+                            <div
+                                className={`h-full transition-all duration-100 ${audioLevel < 30 ? 'bg-gray-500' :
+                                    audioLevel < 60 ? 'bg-green-500' :
+                                        audioLevel < 80 ? 'bg-yellow-500' : 'bg-red-500'
+                                    }`}
+                                style={{ width: `${audioLevel}%` }}
+                            />
+                        </div>
+                    </div>
                 </div>
             )}
 
             {/* No Devices Message */}
             {!isLoading && devices.length === 0 && (
-                <div className="text-center py-8 text-gray-400">
-                    <MicOff size={48} className="mx-auto mb-4 text-gray-600" />
-                    <p>마이크 장치를 찾을 수 없습니다.</p>
-                    <p className="text-sm mt-2">마이크를 연결하고 브라우저 권한을 허용해주세요.</p>
+                <div className="text-center py-4 text-gray-400 text-sm">
+                    <p>마이크를 찾을 수 없습니다.</p>
                 </div>
             )}
         </div>
