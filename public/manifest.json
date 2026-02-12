@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Focus Prompter - Presentation Side Panel",
+    "name": "Focus Prompter - Presentation Window",
     "version": "1.0.0",
     "description": "Voice-activated teleprompter in your side panel.",
     "icons": {
