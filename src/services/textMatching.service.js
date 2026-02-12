@@ -16,13 +16,22 @@ export const matchSpokenText = (spokenText, words, currentIndex, lookAhead = 20)
     const spokenWords = spokenText.split(' ');
     const checkRange = Math.min(spokenWords.length, 3);
 
+    // List of common short filler words to ignore for loose matching (English mostly)
+    const STOP_WORDS = new Set([
+        'a', 'an', 'the', 'to', 'of', 'in', 'on', 'at', 'is', 'it', 'that', 'this',
+        'and', 'or', 'but', 'if', 'so', 'as', 'by', 'for', 'with', 'be', 'are'
+    ]);
+
     // Check the last few spoken words (most recent ones)
     for (let j = 0; j < checkRange; j++) {
         const spokenIndex = spokenWords.length - 1 - j;
         const spokenWord = spokenWords[spokenIndex];
         const target = cleanWord(spokenWord);
 
-        if (target.length < 2) continue;
+        // Skip extremely short words unless they are exact matches next to current
+        if (target.length < 2 && !['i', 'a'].includes(target.toLowerCase())) continue;
+
+        const isStopWord = STOP_WORDS.has(target.toLowerCase());
 
         // Search for the word in script within look-ahead range
         // Handle negative index (start of script)
@@ -31,15 +40,29 @@ export const matchSpokenText = (spokenText, words, currentIndex, lookAhead = 20)
             const scriptWord = cleanWord(words[i]);
 
             // Check if words match (either direction for partial matches)
-            if (scriptWord.includes(target) || target.includes(scriptWord)) {
+            // Stricter match for short words
+            const isMatch = scriptWord.toLowerCase() === target.toLowerCase() ||
+                (target.length > 3 && (scriptWord.includes(target) || target.includes(scriptWord)));
+
+            if (isMatch) {
                 const jumpDistance = i - currentIndex;
 
-                // If it's very close, just accept it
-                if (jumpDistance <= 5) {
+                // Case 1: Very close match (immediate next few words)
+                if (jumpDistance <= 2) {
+                    // For stop words, require EXACT next position or very strong context
+                    if (isStopWord && jumpDistance > 1) {
+                        continue;
+                    }
                     return i;
                 }
 
-                // For larger jumps, verify with context (previous word)
+                // Case 2: Jump (3+ words away)
+                // STRICTER RULES for jumps to prevent skimming/skipping
+
+                // Rule A: Never jump on a stop word alone
+                if (isStopWord) continue;
+
+                // Rule B: Verify with Context (Previous word must match)
                 const prevSpokenIndex = spokenIndex - 1;
                 const prevScriptIndex = i - 1;
                 let isContextMatch = false;
@@ -47,7 +70,9 @@ export const matchSpokenText = (spokenText, words, currentIndex, lookAhead = 20)
                 if (prevSpokenIndex >= 0 && prevScriptIndex >= 0) {
                     const prevSpoken = cleanWord(spokenWords[prevSpokenIndex]);
                     const prevScript = cleanWord(words[prevScriptIndex]);
-                    if (prevScript.includes(prevSpoken) || prevSpoken.includes(prevScript)) {
+
+                    if (prevScript && prevSpoken &&
+                        (prevScript.includes(prevSpoken) || prevSpoken.includes(prevScript))) {
                         isContextMatch = true;
                     }
                 }
@@ -56,13 +81,13 @@ export const matchSpokenText = (spokenText, words, currentIndex, lookAhead = 20)
                     return i;
                 }
 
-                // Check if this word only appears once in the search range (unique word)
+                // Rule C: Unique Word Check
                 let occurrenceCount = 0;
                 for (let k = currentIndex; k < searchLimit; k++) {
                     if (cleanWord(words[k]).includes(target)) occurrenceCount++;
                 }
 
-                if (occurrenceCount === 1) {
+                if (occurrenceCount === 1 && target.length > 4) {
                     return i;
                 }
             }

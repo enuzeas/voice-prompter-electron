@@ -55,7 +55,8 @@ const App = () => {
     const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, audioDeviceId, isMirrored } = config;
 
     // Process script to words
-    const words = useMemo(() => processScriptToWords(scriptText), [scriptText]);
+    // Process script to words
+    const words = useMemo(() => processScriptToWords(scriptText, config.language), [scriptText, config.language]);
 
     // Speech recognition
     const {
