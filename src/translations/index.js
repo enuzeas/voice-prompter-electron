@@ -16,6 +16,13 @@ export const translations = {
             voice: '음성 인식',
             manual: '자동 스크롤'
         },
+        about: {
+            title: '정보',
+            version: '버전',
+            privacyTitle: '개인정보 처리방침',
+            privacyContent: 'Focus-prompter 개인정보 처리방침\n\n데이터 수집: 이 확장 프로그램은 개인 식별 정보를 수집, 저장 또는 전송하지 않습니다.\n\n오디오 데이터: 음성 인식은 Web Speech API를 통해 로컬에서 처리됩니다. 오디오 데이터는 서버로 전송되지 않습니다.\n\n로컬 스토리지: 대본과 설정은 사용자의 로컬 브라우저 저장소에만 저장됩니다.\n\n제3자 공유: 제3자와 데이터를 공유하지 않습니다.',
+            close: '닫기'
+        },
         actions: {
             startListening: '인식 시작',
             stopListening: '인식 중지',
@@ -81,6 +88,13 @@ export const translations = {
         modes: {
             voice: 'Voice Mode',
             manual: 'Auto Scroll'
+        },
+        about: {
+            title: 'About',
+            version: 'Version',
+            privacyTitle: 'Privacy Policy',
+            privacyContent: 'Privacy Policy for Focus-prompter\n\nData Collection: This extension does not collect, store, or transmit any personally identifiable information.\n\nAudio Data: Voice recognition is processed locally through the Web Speech API. Audio data is never sent to our servers.\n\nLocal Storage: Scripts and settings are stored strictly in the user\'s local browser storage.\n\nThird-party Sharing: No data is shared with third parties.',
+            close: 'Close'
         },
         actions: {
             startListening: 'Start Listening',
@@ -148,6 +162,13 @@ export const translations = {
             voice: '音声認識',
             manual: '自動スクロール'
         },
+        about: {
+            title: '情報',
+            version: 'バージョン',
+            privacyTitle: 'プライバシーポリシー',
+            privacyContent: 'Focus-prompter プライバシーポリシー\n\nデータ収集：この拡張機能は、個人を特定できる情報を収集、保存、または送信しません。\n\n音声データ：音声認識はWeb Speech APIを通じてローカルで処理されます。音声データがサーバーに送信されることはありません。\n\nローカルストレージ：スクリプトと設定は、ユーザーのローカルブラウザストレージにのみ保存されます。\n\n第三者への共有：第三者とデータを共有することはありません。',
+            close: '閉じる'
+        },
         actions: {
             startListening: '認識開始',
             stopListening: '認識停止',
@@ -213,6 +234,13 @@ export const translations = {
         modes: {
             voice: '语音识别',
             manual: '自动滚动'
+        },
+        about: {
+            title: '关于',
+            version: '版本',
+            privacyTitle: '隐私政策',
+            privacyContent: 'Focus-prompter 隐私政策\n\n数据收集：此扩展程序不收集、存储或传输任何个人身份信息。\n\n音频数据：语音识别通过 Web Speech API 在本地处理。音频数据从未发送到我们的服务器。\n\n本地存储：脚本和设置严格存储在用户的本地浏览器存储中。\n\n第三方共享：不与第三方共享任何数据。',
+            close: '关闭'
         },
         actions: {
             startListening: '开始识别',

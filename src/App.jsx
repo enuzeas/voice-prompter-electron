@@ -5,6 +5,7 @@ import SettingsPanel from './components/Settings/SettingsPanel';
 import ScriptEditor from './components/ScriptEditor/ScriptEditor';
 import PrompterDisplay from './components/Prompter/PrompterDisplay';
 import ShortcutModal from './components/Help/ShortcutModal';
+import AboutModal from './components/Help/AboutModal';
 import SEO from './components/Common/SEO';
 import useIndexedDB from './hooks/useIndexedDB';
 import useSpeechRecognition from './hooks/useSpeechRecognition';
@@ -14,6 +15,7 @@ import { processScriptToWords } from './utils/wordProcessing';
 import keyboardHandler from './utils/keyboardHandler';
 import { downloadTextFile } from './utils/fileHandler';
 import defaultScript from './constants/defaultScript';
+import defaultScripts from './constants/defaultScripts';
 
 const App = () => {
     // Mode and UI state
@@ -22,6 +24,7 @@ const App = () => {
     const [showScriptEditor, setShowScriptEditor] = useState(false);
     const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
     const [showShortcutModal, setShowShortcutModal] = useState(true); // Default to true
+    const [showAboutModal, setShowAboutModal] = useState(false);
 
     // Check modal preference on mount
     useEffect(() => {
@@ -144,6 +147,16 @@ const App = () => {
 
     // Language change handler
     const handleLanguageChange = (newLang) => {
+        // If current script is exactly one of the default scripts, switch to the new language's default
+        const currentScriptValues = Object.values(defaultScripts);
+        // Include the original defaultScript (Korean) just in case
+        currentScriptValues.push(defaultScript);
+
+        if (currentScriptValues.includes(scriptText.trim())) {
+            const newDefaultScript = defaultScripts[newLang] || defaultScripts['en-US'];
+            updateConfig({ scriptText: newDefaultScript });
+        }
+
         setCurrentLanguage(newLang);
         setSpeechLanguage(newLang);
         updateConfig({ language: newLang });
@@ -274,6 +287,7 @@ const App = () => {
                 onToggleFullscreen={handleToggleFullscreen}
                 onOpenPresentation={isPresentationMode ? closePresentation : openPresentation}
                 isPresentationMode={isPresentationMode}
+                onOpenAbout={() => setShowAboutModal(true)}
             />
 
             {/* Settings Panel */}
@@ -307,6 +321,13 @@ const App = () => {
             <ShortcutModal
                 isOpen={showShortcutModal}
                 onClose={() => setShowShortcutModal(false)}
+                currentLanguage={currentLanguage}
+            />
+
+            {/* About Modal */}
+            <AboutModal
+                isOpen={showAboutModal}
+                onClose={() => setShowAboutModal(false)}
                 currentLanguage={currentLanguage}
             />
 

@@ -24,7 +24,8 @@ const Header = ({
     onLanguageChange,
     onToggleFullscreen,
     onOpenPresentation,
-    isPresentationMode
+    isPresentationMode,
+    onOpenAbout
 }) => {
     const { t } = useTranslation(currentLanguage);
 
@@ -60,7 +61,11 @@ const Header = ({
         <div className="flex flex-col z-30 bg-gray-900 border-b border-gray-800 shadow-xl relative">
             <div className="flex items-center justify-between px-6 py-4">
                 <div className="flex items-center gap-4">
-                    <h1 className="text-xl font-bold tracking-tight text-gray-200 hidden md:block">
+                    <h1
+                        className="text-xl font-bold tracking-tight text-gray-200 hidden md:block cursor-pointer hover:text-white transition-colors"
+                        onClick={onOpenAbout}
+                        title={t('about.title')}
+                    >
                         {t('header.title')}
                     </h1>
 
