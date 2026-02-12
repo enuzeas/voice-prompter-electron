@@ -10,7 +10,6 @@ const PrompterDisplay = ({
     letterSpacing,
     lineHeight,
     isSerif,
-    isSerif,
     wordRefs,
     isMirrored
 }) => {
