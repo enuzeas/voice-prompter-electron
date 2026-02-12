@@ -4,7 +4,7 @@ import presentationService from '../services/presentation.service';
 /**
  * Custom hook for presentation mode
  */
-const usePresentationMode = (scriptData, settings) => {
+const usePresentationMode = (scriptData, settings, onSettingsUpdate) => {
     const [isPresentationMode, setIsPresentationMode] = useState(false);
     const [presentationActiveIndex, setPresentationActiveIndex] = useState(0);
     const isPresentationWindowRef = useRef(false);
@@ -31,6 +31,10 @@ const usePresentationMode = (scriptData, settings) => {
             presentationService.onMessage((message) => {
                 if (message.type === 'update-active-index') {
                     setPresentationActiveIndex(message.data);
+                } else if (message.type === 'update-settings') {
+                    if (onSettingsUpdate) {
+                        onSettingsUpdate(message.data);
+                    }
                 }
             });
         }
@@ -55,6 +59,13 @@ const usePresentationMode = (scriptData, settings) => {
             presentationService.sendUpdate('update-active-index', index);
         }
     };
+
+    // Sync settings to presentation window
+    useEffect(() => {
+        if (isPresentationMode && !isPresentationWindowRef.current) {
+            presentationService.sendUpdate('update-settings', settings);
+        }
+    }, [settings, isPresentationMode]);
 
     return {
         isPresentationMode,

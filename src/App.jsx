@@ -63,7 +63,11 @@ const App = () => {
         openPresentation,
         closePresentation,
         updatePresentationIndex
-    } = usePresentationMode({ words, settings: config });
+    } = usePresentationMode(
+        config, // scriptData (using config as it has scriptText)
+        config, // settings
+        updateConfig // onSettingsUpdate
+    );
 
     // Sync active index with presentation window
     useEffect(() => {
@@ -284,7 +288,7 @@ const App = () => {
                 lineHeight={lineHeight}
                 isSerif={isSerif}
                 wordRefs={wordRefs}
-                isMirrored={isMirrored}
+                isMirrored={false} // Operator view always normal
             />
         </div>
     );
