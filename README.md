@@ -61,6 +61,10 @@ npm run dev
 4.  Click "Load unpacked" and select the `dist` folder.
 5.  Click the extension icon to launch the dedicated window.
 
+### 🚀 Publishing to Web Store
+
+For detailed instructions on how to package and publish this extension to the Chrome Web Store, please see [PUBLISHING.md](PUBLISHING.md).
+
 ## 🏗️ Technology Stack
 
 - **Frontend**: React 18, Vite, Tailwind CSS

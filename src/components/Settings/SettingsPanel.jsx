@@ -1,6 +1,7 @@
 import React from 'react';
 import { Scaling, MoveVertical, Type, Mic, FlipHorizontal } from 'lucide-react';
 import AudioDeviceSelector from './AudioDeviceSelector';
+import useTranslation from '../../hooks/useTranslation';
 
 const SettingsPanel = ({
     fontSize,
@@ -13,15 +14,18 @@ const SettingsPanel = ({
     onDeviceChange,
     onStreamReady,
     isMirrored,
-    onMirrorChange
+    onMirrorChange,
+    currentLanguage
 }) => {
+    const { t } = useTranslation(currentLanguage);
+
     return (
         <div className="px-6 py-4 bg-gray-800/50 backdrop-blur border-t border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
             {/* Audio Device Selector */}
             <div className="md:col-span-3 pb-4 border-b border-gray-700 mb-2">
                 <div className="flex items-center justify-between text-xs text-gray-400 font-bold uppercase mb-2">
                     <span className="flex items-center gap-1">
-                        <Mic size={12} /> 마이크 설정
+                        <Mic size={12} /> {t('settings.microphone')}
                     </span>
                 </div>
                 <AudioDeviceSelector
@@ -35,7 +39,7 @@ const SettingsPanel = ({
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs text-gray-400 font-bold uppercase">
                     <span className="flex items-center gap-1">
-                        <Scaling size={12} /> 글자 크기
+                        <Scaling size={12} /> {t('settings.fontSize')}
                     </span>
                     <span>{fontSize}px</span>
                 </div>
@@ -54,7 +58,7 @@ const SettingsPanel = ({
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs text-gray-400 font-bold uppercase">
                     <span className="flex items-center gap-1">
-                        <MoveVertical size={12} className="rotate-90" /> 자간
+                        <MoveVertical size={12} className="rotate-90" /> {t('settings.letterSpacing')}
                     </span>
                     <span>{letterSpacing}px</span>
                 </div>
@@ -73,7 +77,7 @@ const SettingsPanel = ({
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs text-gray-400 font-bold uppercase">
                     <span className="flex items-center gap-1">
-                        <Type size={12} /> 서체 스타일
+                        <Type size={12} /> {t('settings.fontFamily')}
                     </span>
                 </div>
                 <div className="flex gap-2">
@@ -84,7 +88,7 @@ const SettingsPanel = ({
                             : 'bg-gray-700 border-gray-600 text-gray-400'
                             }`}
                     >
-                        고딕 (Sans)
+                        {t('settings.sans')}
                     </button>
                     <button
                         onClick={() => onFontFamilyChange(true)}
@@ -93,7 +97,7 @@ const SettingsPanel = ({
                             : 'bg-gray-700 border-gray-600 text-gray-400'
                             }`}
                     >
-                        명조 (Serif)
+                        {t('settings.serif')}
                     </button>
                 </div>
             </div>
@@ -102,7 +106,7 @@ const SettingsPanel = ({
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs text-gray-400 font-bold uppercase">
                     <span className="flex items-center gap-1">
-                        <FlipHorizontal size={12} /> 좌우 반전
+                        <FlipHorizontal size={12} /> {t('settings.mirror')}
                     </span>
                 </div>
                 <div className="flex gap-2">
@@ -113,7 +117,7 @@ const SettingsPanel = ({
                             : 'bg-gray-700 border-gray-600 text-gray-400'
                             }`}
                     >
-                        기본
+                        {t('settings.normal')}
                     </button>
                     <button
                         onClick={() => onMirrorChange(true)}
@@ -122,7 +126,7 @@ const SettingsPanel = ({
                             : 'bg-gray-700 border-gray-600 text-gray-400'
                             }`}
                     >
-                        반전
+                        {t('settings.mirrored')}
                     </button>
                 </div>
             </div>

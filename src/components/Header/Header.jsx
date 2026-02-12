@@ -3,6 +3,7 @@ import { Settings, FileText, Cloud, Loader2, AlertCircle, Languages, Maximize2, 
 import ModeSelector from './ModeSelector';
 import ActionButtons from './ActionButtons';
 import languages from '../../constants/languages';
+import useTranslation from '../../hooks/useTranslation';
 
 const Header = ({
     mode,
@@ -25,26 +26,28 @@ const Header = ({
     onOpenPresentation,
     isPresentationMode
 }) => {
+    const { t } = useTranslation(currentLanguage);
+
     // Sync status indicator
     const SyncIndicator = () => {
         if (saveStatus === 'saving') {
             return (
                 <div className="flex items-center gap-1 text-xs text-blue-400">
-                    <Loader2 size={12} className="animate-spin" /> 저장 중...
+                    <Loader2 size={12} className="animate-spin" /> {t('header.saving')}
                 </div>
             );
         }
         if (saveStatus === 'saved') {
             return (
                 <div className="flex items-center gap-1 text-xs text-gray-500">
-                    <Cloud size={12} /> 저장됨
+                    <Cloud size={12} /> {t('header.saved')}
                 </div>
             );
         }
         if (saveStatus === 'error') {
             return (
                 <div className="flex items-center gap-1 text-xs text-red-400">
-                    <AlertCircle size={12} /> 저장 실패
+                    <AlertCircle size={12} /> {t('header.saveError')}
                 </div>
             );
         }
@@ -58,10 +61,14 @@ const Header = ({
             <div className="flex items-center justify-between px-6 py-4">
                 <div className="flex items-center gap-4">
                     <h1 className="text-xl font-bold tracking-tight text-gray-200 hidden md:block">
-                        Focus Prompter
+                        {t('header.title')}
                     </h1>
 
-                    <ModeSelector mode={mode} onModeChange={onModeChange} />
+                    <ModeSelector
+                        mode={mode}
+                        onModeChange={onModeChange}
+                        currentLanguage={currentLanguage}
+                    />
                 </div>
 
                 {/* Sync Status */}
@@ -79,16 +86,17 @@ const Header = ({
                         onReset={onReset}
                         manualSpeed={manualSpeed}
                         onSpeedChange={onSpeedChange}
+                        currentLanguage={currentLanguage}
                     />
 
                     {/* Presentation Mode Button */}
                     <button
                         onClick={onOpenPresentation}
                         className={`p-2 rounded-lg border border-gray-700 transition-colors ${isPresentationMode
-                                ? 'bg-purple-600 text-white border-purple-500'
-                                : 'bg-gray-800 text-gray-400 hover:text-white'
+                            ? 'bg-purple-600 text-white border-purple-500'
+                            : 'bg-gray-800 text-gray-400 hover:text-white'
                             }`}
-                        title="프리젠테이션 모드"
+                        title={t('header.presentationMode')}
                     >
                         <MonitorPlay size={20} />
                     </button>
@@ -97,7 +105,7 @@ const Header = ({
                     <button
                         onClick={onToggleFullscreen}
                         className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-700 text-gray-400 hover:text-white transition-colors"
-                        title="전체화면"
+                        title={t('header.fullscreen')}
                     >
                         <Maximize2 size={20} />
                     </button>
@@ -106,7 +114,7 @@ const Header = ({
                     <div className="relative group">
                         <button
                             className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-700 text-gray-400 hover:text-white transition-colors flex items-center gap-1"
-                            title="언어 선택"
+                            title={t('header.languageSelect')}
                         >
                             <span className="text-lg">{currentLang.flag}</span>
                             <Languages size={16} />
@@ -129,10 +137,10 @@ const Header = ({
                     <button
                         onClick={onToggleScriptEditor}
                         className={`p-2 rounded-lg border border-gray-700 transition-colors ${showScriptEditor
-                                ? 'bg-blue-600 text-white border-blue-500'
-                                : 'bg-gray-800 text-gray-400 hover:text-white'
+                            ? 'bg-blue-600 text-white border-blue-500'
+                            : 'bg-gray-800 text-gray-400 hover:text-white'
                             }`}
-                        title="대본 편집"
+                        title={t('header.editScript')}
                     >
                         <FileText size={20} />
                     </button>
@@ -140,10 +148,10 @@ const Header = ({
                     <button
                         onClick={onToggleSettings}
                         className={`p-2 rounded-lg border border-gray-700 transition-colors ${showSettings
-                                ? 'bg-blue-600 text-white border-blue-500'
-                                : 'bg-gray-800 text-gray-400 hover:text-white'
+                            ? 'bg-blue-600 text-white border-blue-500'
+                            : 'bg-gray-800 text-gray-400 hover:text-white'
                             }`}
-                        title="설정"
+                        title={t('header.settings')}
                     >
                         <Settings size={20} />
                     </button>

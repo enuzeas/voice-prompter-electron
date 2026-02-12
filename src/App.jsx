@@ -290,6 +290,7 @@ const App = () => {
                     onStreamReady={handleStreamReady}
                     isMirrored={isMirrored}
                     onMirrorChange={(mirrored) => updateConfig({ isMirrored: mirrored })}
+                    currentLanguage={currentLanguage}
                 />
             )}
 
@@ -299,12 +300,14 @@ const App = () => {
                 scriptText={scriptText}
                 onSave={handleScriptSave}
                 onClose={() => setShowScriptEditor(false)}
+                currentLanguage={currentLanguage}
             />
 
             {/* Shortcut Modal */}
             <ShortcutModal
                 isOpen={showShortcutModal}
                 onClose={() => setShowShortcutModal(false)}
+                currentLanguage={currentLanguage}
             />
 
             {/* Error Message */}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mic, MicOff, Play, Pause, RefreshCw } from 'lucide-react';
+import useTranslation from '../../hooks/useTranslation';
 
 const ActionButtons = ({
     mode,
@@ -9,25 +10,28 @@ const ActionButtons = ({
     onTogglePlay,
     onReset,
     manualSpeed,
-    onSpeedChange
+    onSpeedChange,
+    currentLanguage
 }) => {
+    const { t } = useTranslation(currentLanguage);
+
     return (
         <div className="flex gap-3 items-center">
             {mode === 'voice' ? (
                 <button
                     onClick={onToggleListening}
                     className={`flex items-center gap-2 px-6 py-2 rounded-lg font-bold transition-all ${isListening
-                            ? 'bg-red-500/10 text-red-500 border border-red-500'
-                            : 'bg-green-600 hover:bg-green-500 text-white shadow-lg'
+                        ? 'bg-red-500/10 text-red-500 border border-red-500'
+                        : 'bg-green-600 hover:bg-green-500 text-white shadow-lg'
                         }`}
                 >
                     {isListening ? (
                         <>
-                            <MicOff size={18} /> 인식 중지
+                            <MicOff size={18} /> {t('actions.stopListening')}
                         </>
                     ) : (
                         <>
-                            <Mic size={18} /> 인식 시작
+                            <Mic size={18} /> {t('actions.startListening')}
                         </>
                     )}
                 </button>
@@ -35,7 +39,7 @@ const ActionButtons = ({
                 <div className="flex items-center gap-2">
                     {/* Speed Control */}
                     <div className="hidden md:flex items-center gap-2 mr-4 bg-gray-800 px-3 py-1 rounded-lg border border-gray-700">
-                        <span className="text-xs text-gray-400 font-bold">SPEED</span>
+                        <span className="text-xs text-gray-400 font-bold">{t('actions.speed')}</span>
                         <input
                             type="range"
                             min="1"
@@ -51,17 +55,17 @@ const ActionButtons = ({
                     <button
                         onClick={onTogglePlay}
                         className={`flex items-center gap-2 px-6 py-2 rounded-lg font-bold transition-all ${isPlaying
-                                ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500'
-                                : 'bg-green-600 hover:bg-green-500 text-white shadow-lg'
+                            ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500'
+                            : 'bg-green-600 hover:bg-green-500 text-white shadow-lg'
                             }`}
                     >
                         {isPlaying ? (
                             <>
-                                <Pause size={18} /> 일시 정지
+                                <Pause size={18} /> {t('actions.pause')}
                             </>
                         ) : (
                             <>
-                                <Play size={18} /> 재생 시작
+                                <Play size={18} /> {t('actions.play')}
                             </>
                         )}
                     </button>
@@ -71,7 +75,7 @@ const ActionButtons = ({
             <button
                 onClick={onReset}
                 className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-700 text-gray-400 hover:text-white transition-colors"
-                title="초기화"
+                title={t('actions.reset')}
             >
                 <RefreshCw size={20} />
             </button>
