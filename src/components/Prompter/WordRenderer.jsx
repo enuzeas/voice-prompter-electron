@@ -44,21 +44,42 @@ const WordRenderer = ({
         } else {
             opacity = 0.2;
         }
-    } else {
-        // Manual mode: all text visible
-        colorClass = 'text-white';
-        opacity = 0.9;
+
+        // Determine transition duration: 1s for fading out from active
+        const transitionDuration = isPassed ? 'duration-1000' : 'duration-150';
+
+        return (
+            <span
+                key={index}
+                ref={wordRef}
+                className={`inline-block transition-all ease-out ${transitionDuration} ${colorClass}`}
+                style={{
+                    fontSize: `${fontSize}px`,
+                    letterSpacing: `${letterSpacing}px`,
+                    lineHeight: lineHeight,
+                    marginRight: `${fontSize * 0.3}px`,
+                    opacity: opacity,
+                    filter: `blur(${blur}px)`,
+                    transform: `scale(${scale})`,
+                    textShadow: isHighlighted ? '0 0 30px rgba(253, 224, 71, 0.6)' : 'none',
+                    fontWeight: isHighlighted ? 800 : 600
+                }}
+                dangerouslySetInnerHTML={hasMarkdown ? { __html: parsedWord } : undefined}
+            >
+                {hasMarkdown ? undefined : word}
+            </span>
+        );
     }
 
-    // Parse markdown for visual display
-    const parsedWord = parseMarkdown(word);
-    const hasMarkdown = parsedWord !== word;
+    // Manual mode or default fallback
+    colorClass = 'text-white';
+    opacity = 0.9;
 
     return (
         <span
             key={index}
             ref={wordRef}
-            className={`inline-block transition-all duration-100 ease-out ${colorClass}`}
+            className={`inline-block transition-all duration-150 ease-out ${colorClass}`}
             style={{
                 fontSize: `${fontSize}px`,
                 letterSpacing: `${letterSpacing}px`,
