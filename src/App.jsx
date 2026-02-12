@@ -76,6 +76,16 @@ const App = () => {
         }
     }, [activeIndex, isPresentationMode, updatePresentationIndex]);
 
+    // Auto-scroll to active word in Presentation Window
+    useEffect(() => {
+        if (isPresentationWindow && wordRefs.current[presentationActiveIndex]) {
+            wordRefs.current[presentationActiveIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+    }, [isPresentationWindow, presentationActiveIndex]);
+
     // Auto scroll
     const {
         isPlaying,
