@@ -27,8 +27,9 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
 
     // Listen for messages from main window
     useEffect(() => {
+        presentationService.initialize();
+
         if (isPresentationWindowRef.current) {
-            presentationService.initialize();
             presentationService.onMessage((message) => {
                 if (message.type === 'update-active-index') {
                     setPresentationActiveIndex(message.data);
