@@ -25,7 +25,9 @@ export const matchSpokenText = (spokenText, words, currentIndex, lookAhead = 20)
         if (target.length < 2) continue;
 
         // Search for the word in script within look-ahead range
-        for (let i = currentIndex; i < searchLimit; i++) {
+        // Handle negative index (start of script)
+        const startIndex = Math.max(0, currentIndex);
+        for (let i = startIndex; i < searchLimit; i++) {
             const scriptWord = cleanWord(words[i]);
 
             // Check if words match (either direction for partial matches)
