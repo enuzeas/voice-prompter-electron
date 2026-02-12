@@ -41,15 +41,66 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate) => {
     }, []);
 
     // Open presentation window
-    const openPresentation = () => {
-        presentationService.initialize();
-        presentationService.openPresentationWindow(scriptData, settings);
-        setIsPresentationMode(true);
-    };
+    const openPresentation = useCallback(() => {
+        if (presentationWindowRef.current && !presentationWindowRef.current.closed) {
+            presentationWindowRef.current.focus();
+            return;
+        }
+
+        // Store data in localStorage for presentation window to read (SHARED between windows/tabs/extension pages)
+        localStorage.setItem('presentation-script', JSON.stringify(scriptData));
+        localStorage.setItem('presentation-settings', JSON.stringify(settings));
+
+        // Check if running as Chrome Extension
+        const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
+
+        if (isExtension) {
+            chrome.windows.create({
+                url: 'index.html?mode=presentation',
+                type: 'popup',
+                width: 1024,
+                height: 768,
+                focused: true
+            }, (window) => {
+                // In extension mode, we can't easily get the window object reference like window.open
+                // But BroadcastChannel will still work fine for communication
+                // We just store a dummy visible state or try to get the view properly if needed
+                setIsPresentationMode(true);
+            });
+        } else {
+            // Standard Web App Config
+            const width = 1024;
+            const height = 768;
+            const left = (window.screen.width - width) / 2;
+            const top = (window.screen.height - height) / 2;
+
+            const newWindow = window.open(
+                '/?mode=presentation',
+                'PrompterPresentation',
+                `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
+            );
+
+            if (newWindow) {
+                presentationWindowRef.current = newWindow;
+                setIsPresentationMode(true);
+
+                // Initial sync
+                // Note: presentationService.initialize() is called here implicitly by the new window
+                // when it loads. We just need to send the initial state.
+                presentationService.sendUpdate('update-active-index', activeIndexRef.current);
+                presentationService.sendUpdate('update-settings', settings); // Also sync initial settings
+            }
+        }
+    }, [settings]); // Added settings to dependencies for initial sync
 
     // Close presentation window
     const closePresentation = () => {
-        presentationService.closePresentationWindow();
+        if (presentationWindowRef.current) {
+            presentationWindowRef.current.close();
+            presentationWindowRef.current = null;
+        }
+        // For extension, we can't directly close the window from here easily
+        // The user would close it manually.
         setIsPresentationMode(false);
     };
 

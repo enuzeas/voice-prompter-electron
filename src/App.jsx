@@ -33,7 +33,6 @@ const App = () => {
         lineHeight: 1.6,
         manualSpeed: 3,
         language: 'ko-KR',
-        language: 'ko-KR',
         audioDeviceId: 'default',
         isMirrored: false
     });
