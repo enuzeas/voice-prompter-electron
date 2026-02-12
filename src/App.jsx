@@ -4,6 +4,7 @@ import Header from './components/Header/Header';
 import SettingsPanel from './components/Settings/SettingsPanel';
 import ScriptEditor from './components/ScriptEditor/ScriptEditor';
 import PrompterDisplay from './components/Prompter/PrompterDisplay';
+import ShortcutModal from './components/Help/ShortcutModal';
 import useIndexedDB from './hooks/useIndexedDB';
 import useSpeechRecognition from './hooks/useSpeechRecognition';
 import useAutoScroll from './hooks/useAutoScroll';
@@ -19,6 +20,15 @@ const App = () => {
     const [showSettings, setShowSettings] = useState(false);
     const [showScriptEditor, setShowScriptEditor] = useState(false);
     const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
+    const [showShortcutModal, setShowShortcutModal] = useState(true); // Default to true
+
+    // Check modal preference on mount
+    useEffect(() => {
+        const shouldHide = localStorage.getItem('hideShortcutModal') === 'true';
+        if (shouldHide) {
+            setShowShortcutModal(false);
+        }
+    }, []);
 
     // Refs
     const containerRef = useRef(null);
@@ -278,6 +288,12 @@ const App = () => {
                 scriptText={scriptText}
                 onSave={handleScriptSave}
                 onClose={() => setShowScriptEditor(false)}
+            />
+
+            {/* Shortcut Modal */}
+            <ShortcutModal
+                isOpen={showShortcutModal}
+                onClose={() => setShowShortcutModal(false)}
             />
 
             {/* Error Message */}
