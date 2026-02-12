@@ -11,8 +11,6 @@ const SettingsPanel = ({
     onFontFamilyChange,
     selectedDeviceId,
     onDeviceChange,
-    selectedDeviceId,
-    onDeviceChange,
     onStreamReady,
     isMirrored,
     onMirrorChange
