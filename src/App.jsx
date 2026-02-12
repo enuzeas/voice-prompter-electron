@@ -84,7 +84,7 @@ const App = () => {
                 block: 'center'
             });
         }
-    }, [isPresentationWindow, presentationActiveIndex]);
+    }, [isPresentationWindow, presentationActiveIndex, words]);
 
     // Auto scroll
     const {
