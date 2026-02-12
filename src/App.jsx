@@ -14,30 +14,32 @@ import { downloadTextFile } from './utils/fileHandler';
 import defaultScript from './constants/defaultScript';
 
 const App = () => {
-// Mode and UI state
-const [mode, setMode] = useState('voice');
-const [showSettings, setShowSettings] = useState(false);
-const [showScriptEditor, setShowScriptEditor] = useState(false);
-const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
+    // Mode and UI state
+    const [mode, setMode] = useState('voice');
+    const [showSettings, setShowSettings] = useState(false);
+    const [showScriptEditor, setShowScriptEditor] = useState(false);
+    const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
 
-// Refs
-const containerRef = useRef(null);
-const audioDeviceSelectorRef = useRef(null);
+    // Refs
+    const containerRef = useRef(null);
+    const audioDeviceSelectorRef = useRef(null);
 
-// IndexedDB persistence
-const { config, updateConfig, saveStatus } = useIndexedDB({
-    scriptText: defaultScript,
-    fontSize: 48,
-    letterSpacing: 0,
-    isSerif: false,
-    lineHeight: 1.6,
-    manualSpeed: 3,
-    language: 'ko-KR',
-    audioDeviceId: 'default'
-});
+    // IndexedDB persistence
+    const { config, updateConfig, saveStatus } = useIndexedDB({
+        scriptText: defaultScript,
+        fontSize: 48,
+        letterSpacing: 0,
+        isSerif: false,
+        lineHeight: 1.6,
+        manualSpeed: 3,
+        language: 'ko-KR',
+        language: 'ko-KR',
+        audioDeviceId: 'default',
+        isMirrored: false
+    });
 
-// Derived state from config
-const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, audioDeviceId } = config;
+    // Derived state from config
+    const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, audioDeviceId, isMirrored } = config;
 
     // Process script to words
     const words = useMemo(() => processScriptToWords(scriptText), [scriptText]);
@@ -203,6 +205,7 @@ const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, a
                     lineHeight={lineHeight}
                     isSerif={isSerif}
                     wordRefs={wordRefs}
+                    isMirrored={isMirrored}
                 />
             </div>
         );
@@ -250,6 +253,8 @@ const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, a
                     selectedDeviceId={audioDeviceId}
                     onDeviceChange={handleDeviceChange}
                     onStreamReady={handleStreamReady}
+                    isMirrored={isMirrored}
+                    onMirrorChange={(mirrored) => updateConfig({ isMirrored: mirrored })}
                 />
             )}
 
@@ -279,6 +284,7 @@ const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, a
                 lineHeight={lineHeight}
                 isSerif={isSerif}
                 wordRefs={wordRefs}
+                isMirrored={isMirrored}
             />
         </div>
     );

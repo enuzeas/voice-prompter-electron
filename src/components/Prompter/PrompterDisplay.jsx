@@ -10,7 +10,9 @@ const PrompterDisplay = ({
     letterSpacing,
     lineHeight,
     isSerif,
-    wordRefs
+    isSerif,
+    wordRefs,
+    isMirrored
 }) => {
     return (
         <div
@@ -40,9 +42,12 @@ const PrompterDisplay = ({
                         index={index}
                         mode={mode}
                         activeIndex={activeIndex}
-                        fontSize={fontSize}
-                        letterSpacing={letterSpacing}
-                        lineHeight={lineHeight}
+                        style={{
+                            fontSize: `${fontSize}px`,
+                            lineHeight: lineHeight,
+                            letterSpacing: `${letterSpacing}px`,
+                            transform: isMirrored ? 'scaleX(-1)' : 'none'
+                        }}
                         wordRef={(el) => (wordRefs.current[index] = el)}
                     />
                 ))}
