@@ -291,5 +291,662 @@ export const translations = {
             cancel: '取消',
             apply: '应用'
         }
+    },
+    'es-ES': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Guardando...',
+            saved: 'Guardado',
+            saveError: 'Error al guardar',
+            presentationMode: 'Modo Presentación',
+            fullscreen: 'Pantalla Completa',
+            languageSelect: 'Seleccionar Idioma',
+            editScript: 'Editar Guion',
+            settings: 'Configuración'
+        },
+        modes: {
+            voice: 'Modo Voz',
+            manual: 'Desplazamiento Auto'
+        },
+        about: {
+            title: 'Acerca de',
+            version: 'Versión',
+            privacyTitle: 'Política de Privacidad',
+            privacyContent: 'Política de Privacidad de Focus-prompter\n\nRecopilación de Datos: Esta extensión no recopila, almacena ni transmite ninguna información de identificación personal.\n\nDatos de Audio: El reconocimiento de voz se procesa localmente a través de Web Speech API. Los datos de audio nunca se envían a nuestros servidores.\n\nAlmacenamiento Local: Los guiones y configuraciones se almacenan estrictamente en el almacenamiento local del navegador del usuario.\n\nCompartir con Terceros: No se comparten datos con terceros.',
+            close: 'Cerrar'
+        },
+        actions: {
+            startListening: 'Escuchar',
+            stopListening: 'Detener',
+            play: 'Reproducir',
+            pause: 'Pausa',
+            speed: 'VELOCIDAD',
+            reset: 'Reiniciar'
+        },
+        settings: {
+            microphone: 'Micrófono',
+            fontSize: 'Tamaño de Fuente',
+            letterSpacing: 'Espaciado',
+            fontFamily: 'Estilo de Fuente',
+            sans: 'Sans-serif',
+            serif: 'Serif',
+            mirror: 'Modo Espejo',
+            normal: 'Normal',
+            mirrored: 'Espejo'
+        },
+        shortcuts: {
+            title: 'Atajos de Teclado',
+            dontShowAgain: "No mostrar de nuevo",
+            confirm: 'OK',
+            categories: {
+                basic: 'Controles Básicos',
+                view: 'Controles de Vista',
+                ui: 'Alternar UI',
+                file: 'Gestión de Archivos'
+            },
+            descriptions: {
+                togglePlay: 'Reproducir / Pausa',
+                reset: 'Reiniciar al Inicio',
+                fullscreen: 'Alternar Pantalla Completa',
+                presentation: 'Modo Presentación',
+                editor: 'Abrir Editor',
+                settings: 'Abrir Configuración',
+                closeModal: 'Cerrar Modal',
+                save: 'Guardar Archivo (.txt)',
+                open: 'Abrir Archivo (.txt)'
+            }
+        },
+        editor: {
+            title: 'Editar Guion',
+            import: 'Importar TXT',
+            download: 'Descargar',
+            placeholder: 'Escriba o pegue su guion aquí...\n\nMarkdown soportado:\n**Negrita**, *Cursiva*, ~~Tachado~~, __Subrayado__',
+            cancel: 'Cancelar',
+            apply: 'Aplicar'
+        }
+    },
+    'fr-FR': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Enregistrement...',
+            saved: 'Enregistré',
+            saveError: 'Échec de l\'enregistrement',
+            presentationMode: 'Mode Présentation',
+            fullscreen: 'Plein Écran',
+            languageSelect: 'Choisir la Langue',
+            editScript: 'Éditer le Script',
+            settings: 'Paramètres'
+        },
+        modes: {
+            voice: 'Mode Vocal',
+            manual: 'Défilement Auto'
+        },
+        about: {
+            title: 'À Propos',
+            version: 'Version',
+            privacyTitle: 'Politique de Confidentialité',
+            privacyContent: 'Politique de Confidentialité de Focus-prompter\n\nCollecte de Données : Cette extension ne collecte, ne stocke ni ne transmet aucune information personnelle identifiable.\n\nDonnées Audio : La reconnaissance vocale est traitée localement via l\'API Web Speech. Les données audio ne sont jamais envoyées à nos serveurs.\n\nStockage Local : Les scripts et les paramètres sont stockés strictement dans le stockage local du navigateur de l\'utilisateur.\n\nPartage avec des Tiers : Aucune donnée n\'est partagée avec des tiers.',
+            close: 'Fermer'
+        },
+        actions: {
+            startListening: 'Écouter',
+            stopListening: 'Arrêter',
+            play: 'Lecture',
+            pause: 'Pause',
+            speed: 'VITESSE',
+            reset: 'Réinitialiser'
+        },
+        settings: {
+            microphone: 'Microphone',
+            fontSize: 'Taille Police',
+            letterSpacing: 'Espacement',
+            fontFamily: 'Style de Police',
+            sans: 'Sans-serif',
+            serif: 'Serif',
+            mirror: 'Mode Miroir',
+            normal: 'Normal',
+            mirrored: 'Miroir'
+        },
+        shortcuts: {
+            title: 'Raccourcis Clavier',
+            dontShowAgain: "Ne plus afficher",
+            confirm: 'OK',
+            categories: {
+                basic: 'Contrôles de Base',
+                view: 'Contrôles de Vue',
+                ui: 'Bascule UI',
+                file: 'Gestion de Fichiers'
+            },
+            descriptions: {
+                togglePlay: 'Lecture / Pause',
+                reset: 'Réinitialiser au Début',
+                fullscreen: 'Plein Écran',
+                presentation: 'Mode Présentation',
+                editor: 'Ouvrir Éditeur',
+                settings: 'Ouvrir Paramètres',
+                closeModal: 'Fermer',
+                save: 'Enregistrer Fichier (.txt)',
+                open: 'Ouvrir Fichier (.txt)'
+            }
+        },
+        editor: {
+            title: 'Éditer le Script',
+            import: 'Importer TXT',
+            download: 'Télécharger',
+            placeholder: 'Tapez ou collez votre script ici...\n\nMarkdown supporté :\n**Gras**, *Italique*, ~~Barré~~, __Souligné__',
+            cancel: 'Annuler',
+            apply: 'Appliquer'
+        }
+    },
+    'de-DE': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Speichern...',
+            saved: 'Gespeichert',
+            saveError: 'Fehler beim Speichern',
+            presentationMode: 'Präsentationsmodus',
+            fullscreen: 'Vollbild',
+            languageSelect: 'Sprache Wählen',
+            editScript: 'Skript Bearbeiten',
+            settings: 'Einstellungen'
+        },
+        modes: {
+            voice: 'Sprachmodus',
+            manual: 'Auto-Scroll'
+        },
+        about: {
+            title: 'Über',
+            version: 'Version',
+            privacyTitle: 'Datenschutzrichtlinie',
+            privacyContent: 'Datenschutzrichtlinie für Focus-prompter\n\nDatenerfassung: Diese Erweiterung sammelt, speichert oder überträgt keine personenbezogenen Daten.\n\nAudiodaten: Die Spracherkennung wird lokal über die Web Speech API verarbeitet. Audiodaten werden niemals an unsere Server gesendet.\n\nLokaler Speicher: Skripte und Einstellungen werden ausschließlich im lokalen Browserspeicher des Benutzers gespeichert.\n\nWeitergabe an Dritte: Es werden keine Daten an Dritte weitergegeben.',
+            close: 'Schließen'
+        },
+        actions: {
+            startListening: 'Zuhören',
+            stopListening: 'Stoppen',
+            play: 'Abspielen',
+            pause: 'Pause',
+            speed: 'GESCHWINDIGKEIT',
+            reset: 'Zurücksetzen'
+        },
+        settings: {
+            microphone: 'Mikrofon',
+            fontSize: 'Schriftgröße',
+            letterSpacing: 'Zeichenabstand',
+            fontFamily: 'Schriftart',
+            sans: 'Sans-serif',
+            serif: 'Serif',
+            mirror: 'Spiegelmodus',
+            normal: 'Normal',
+            mirrored: 'Gespiegelt'
+        },
+        shortcuts: {
+            title: 'Tastenkürzel',
+            dontShowAgain: "Nicht mehr anzeigen",
+            confirm: 'OK',
+            categories: {
+                basic: 'Grundsteuerung',
+                view: 'Ansichtsteuerung',
+                ui: 'UI Umschalten',
+                file: 'Dateiverwaltung'
+            },
+            descriptions: {
+                togglePlay: 'Abspielen / Pause',
+                reset: 'Zum Anfang',
+                fullscreen: 'Vollbild Umschalten',
+                presentation: 'Präsentationsmodus',
+                editor: 'Editor Öffnen',
+                settings: 'Einstellungen Öffnen',
+                closeModal: 'Schließen',
+                save: 'Datei Speichern (.txt)',
+                open: 'Datei Öffnen (.txt)'
+            }
+        },
+        editor: {
+            title: 'Skript Bearbeiten',
+            import: 'TXT Importieren',
+            download: 'Herunterladen',
+            placeholder: 'Geben Sie Ihr Skript hier ein...\n\nMarkdown unterstützt:\n**Fett**, *Kursiv*, ~~Durchgestrichen~~, __Unterstrichen__',
+            cancel: 'Abbrechen',
+            apply: 'Anwenden'
+        }
+    },
+    'it-IT': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Salvataggio...',
+            saved: 'Salvato',
+            saveError: 'Errore Salvataggio',
+            presentationMode: 'Modo Presentazione',
+            fullscreen: 'Schermo Intero',
+            languageSelect: 'Seleziona Lingua',
+            editScript: 'Modifica Script',
+            settings: 'Impostazioni'
+        },
+        modes: {
+            voice: 'Modo Vocale',
+            manual: 'Scorrimento Auto'
+        },
+        about: {
+            title: 'Info',
+            version: 'Versione',
+            privacyTitle: 'Informativa sulla Privacy',
+            privacyContent: 'Informativa sulla Privacy per Focus-prompter\n\nRaccolta Dati: Questa estensione non raccoglie, archivia o trasmette alcuna informazione di identificazione personale.\n\nDati Audio: Il riconoscimento vocale viene elaborato localmente tramite l\'API Web Speech. I dati audio non vengono mai inviati ai nostri server.\n\nArchiviazione Locale: Gli script e le impostazioni sono archiviati rigorosamente nella memoria locale del browser dell\'utente.\n\nCondivisione con Terze Parti: Nessun dato viene condiviso con terze parti.',
+            close: 'Chiudi'
+        },
+        actions: {
+            startListening: 'Ascolta',
+            stopListening: 'Stop',
+            play: 'Riproduci',
+            pause: 'Pausa',
+            speed: 'VELOCITÀ',
+            reset: 'Resetta'
+        },
+        settings: {
+            microphone: 'Microfono',
+            fontSize: 'Dimensione Font',
+            letterSpacing: 'Spaziatura',
+            fontFamily: 'Stile Font',
+            sans: 'Sans-serif',
+            serif: 'Serif',
+            mirror: 'Modo Specchio',
+            normal: 'Normale',
+            mirrored: 'Specchiato'
+        },
+        shortcuts: {
+            title: 'Scorciatoie Tastiera',
+            dontShowAgain: "Non mostrare più",
+            confirm: 'OK',
+            categories: {
+                basic: 'Controlli Base',
+                view: 'Controlli Vista',
+                ui: 'Toggle UI',
+                file: 'Gestione File'
+            },
+            descriptions: {
+                togglePlay: 'Riproduci / Pausa',
+                reset: 'Resetta all\'Inizio',
+                fullscreen: 'Schermo Intero',
+                presentation: 'Modo Presentazione',
+                editor: 'Apri Editor',
+                settings: 'Apri Impostazioni',
+                closeModal: 'Chiudi',
+                save: 'Salva File (.txt)',
+                open: 'Apri File (.txt)'
+            }
+        },
+        editor: {
+            title: 'Modifica Script',
+            import: 'Importa TXT',
+            download: 'Scarica',
+            placeholder: 'Scrivi o incolla il tuo script qui...\n\nMarkdown supportato:\n**Grassetto**, *Corsivo*, ~~Barrato~~, __Sottolineato__',
+            cancel: 'Annulla',
+            apply: 'Applica'
+        }
+    },
+    'pt-BR': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Salvando...',
+            saved: 'Salvo',
+            saveError: 'Erro ao Salvar',
+            presentationMode: 'Modo Apresentação',
+            fullscreen: 'Tela Cheia',
+            languageSelect: 'Selecionar Idioma',
+            editScript: 'Editar Script',
+            settings: 'Configurações'
+        },
+        modes: {
+            voice: 'Modo Voz',
+            manual: 'Rolagem Auto'
+        },
+        about: {
+            title: 'Sobre',
+            version: 'Versão',
+            privacyTitle: 'Política de Privacidade',
+            privacyContent: 'Política de Privacidade do Focus-prompter\n\nColeta de Dados: Esta extensão não coleta, armazena ou transmite nenhuma informação de identificação pessoal.\n\nDados de Áudio: O reconhecimento de voz é processado localmente através da API Web Speech. Os dados de áudio nunca são enviados aos nossos servidores.\n\nArmazenamento Local: Scripts e configurações são armazenados estritamente no armazenamento local do navegador do usuário.\n\nCompartilhamento com Terceiros: Nenhum dado é compartilhado com terceiros.',
+            close: 'Fechar'
+        },
+        actions: {
+            startListening: 'Ouvir',
+            stopListening: 'Parar',
+            play: 'Reproduzir',
+            pause: 'Pausa',
+            speed: 'VELOCIDADE',
+            reset: 'Reiniciar'
+        },
+        settings: {
+            microphone: 'Microfone',
+            fontSize: 'Tamanho da Fonte',
+            letterSpacing: 'Espaçamento',
+            fontFamily: 'Estilo da Fonte',
+            sans: 'Sans-serif',
+            serif: 'Serif',
+            mirror: 'Modo Espelho',
+            normal: 'Normal',
+            mirrored: 'Espelhado'
+        },
+        shortcuts: {
+            title: 'Atalhos de Teclado',
+            dontShowAgain: "Não mostrar novamente",
+            confirm: 'OK',
+            categories: {
+                basic: 'Controles Básicos',
+                view: 'Controles de Visualização',
+                ui: 'Alternar UI',
+                file: 'Gerenciamento de Arquivos'
+            },
+            descriptions: {
+                togglePlay: 'Reproduzir / Pausa',
+                reset: 'Reiniciar do Início',
+                fullscreen: 'Alternar Tela Cheia',
+                presentation: 'Modo Apresentação',
+                editor: 'Abrir Editor',
+                settings: 'Abrir Configurações',
+                closeModal: 'Fechar',
+                save: 'Salvar Arquivo (.txt)',
+                open: 'Abrir Arquivo (.txt)'
+            }
+        },
+        editor: {
+            title: 'Editar Script',
+            import: 'Importar TXT',
+            download: 'Baixar',
+            placeholder: 'Digite ou cole seu script aqui...\n\nMarkdown suportado:\n**Negrito**, *Itálico*, ~~Tachado~~, __Sublinhado__',
+            cancel: 'Cancelar',
+            apply: 'Aplicar'
+        }
+    },
+    'ru-RU': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Сохранение...',
+            saved: 'Сохранено',
+            saveError: 'Ошибка',
+            presentationMode: 'Режим презентации',
+            fullscreen: 'Полный экран',
+            languageSelect: 'Выбрать язык',
+            editScript: 'Ред. скрипт',
+            settings: 'Настройки'
+        },
+        modes: {
+            voice: 'Голосовой режим',
+            manual: 'Автопрокрутка'
+        },
+        about: {
+            title: 'О программе',
+            version: 'Версия',
+            privacyTitle: 'Политика конфиденциальности',
+            privacyContent: 'Политика конфиденциальности Focus-prompter\n\nСбор данных: Это расширение не собирает, не хранит и не передает никакой личной информации.\n\nАудиоданные: Распознавание речи обрабатывается локально через Web Speech API. Аудиоданные никогда не отправляются на наши серверы.\n\nЛокальное хранилище: Скрипты и настройки хранятся строго в локальном хранилище браузера пользователя.\n\nПередача третьим лицам: Данные не передаются третьим лицам.',
+            close: 'Закрыть'
+        },
+        actions: {
+            startListening: 'Слушать',
+            stopListening: 'Стоп',
+            play: 'Пуск',
+            pause: 'Пауза',
+            speed: 'СКОРОСТЬ',
+            reset: 'Сброс'
+        },
+        settings: {
+            microphone: 'Микрофон',
+            fontSize: 'Размер шрифта',
+            letterSpacing: 'Межбуквенный',
+            fontFamily: 'Стиль шрифта',
+            sans: 'Без засечек',
+            serif: 'С засечками',
+            mirror: 'Зеркальный режим',
+            normal: 'Нормальный',
+            mirrored: 'Зеркальный'
+        },
+        shortcuts: {
+            title: 'Горячие клавиши',
+            dontShowAgain: "Не показывать снова",
+            confirm: 'OK',
+            categories: {
+                basic: 'Основные',
+                view: 'Вид',
+                ui: 'Интерфейс',
+                file: 'Файлы'
+            },
+            descriptions: {
+                togglePlay: 'Пуск / Пауза',
+                reset: 'Сброс в начало',
+                fullscreen: 'Полный экран',
+                presentation: 'Режим презентации',
+                editor: 'Открыть редактор',
+                settings: 'Открыть настройки',
+                closeModal: 'Закрыть',
+                save: 'Сохранить (.txt)',
+                open: 'Открыть (.txt)'
+            }
+        },
+        editor: {
+            title: 'Редактировать скрипт',
+            import: 'Импорт TXT',
+            download: 'Скачать',
+            placeholder: 'Введите или вставьте текст здесь...\n\nПоддержка Markdown:\n**Жирный**, *Курсив*, ~~Зачеркнутый~~, __Подчеркнутый__',
+            cancel: 'Отмена',
+            apply: 'Применить'
+        }
+    },
+    'vi-VN': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Đang lưu...',
+            saved: 'Đã lưu',
+            saveError: 'Lỗi lưu',
+            presentationMode: 'Chế độ Trình chiếu',
+            fullscreen: 'Toàn màn hình',
+            languageSelect: 'Chọn Ngôn ngữ',
+            editScript: 'Sửa Kịch bản',
+            settings: 'Cài đặt'
+        },
+        modes: {
+            voice: 'Chế độ Giọng nói',
+            manual: 'Tự động Cuộn'
+        },
+        about: {
+            title: 'Giới thiệu',
+            version: 'Phiên bản',
+            privacyTitle: 'Chính sách Bảo mật',
+            privacyContent: 'Chính sách Bảo mật của Focus-prompter\n\nThu thập Dữ liệu: Tiện ích mở rộng này không thu thập, lưu trữ hoặc truyền bất kỳ thông tin nhận dạng cá nhân nào.\n\nDữ liệu Âm thanh: Nhận dạng giọng nói được xử lý cục bộ thông qua Web Speech API. Dữ liệu âm thanh không bao giờ được gửi đến máy chủ của chúng tôi.\n\nLưu trữ Cục bộ: Kịch bản và cài đặt được lưu trữ nghiêm ngặt trong bộ nhớ cục bộ của trình duyệt người dùng.\n\nChia sẻ với Bên thứ ba: Không có dữ liệu nào được chia sẻ với bên thứ ba.',
+            close: 'Đóng'
+        },
+        actions: {
+            startListening: 'Bắt đầu',
+            stopListening: 'Dừng',
+            play: 'Phát',
+            pause: 'Tạm dừng',
+            speed: 'TỐC ĐỘ',
+            reset: 'Đặt lại'
+        },
+        settings: {
+            microphone: 'Micro',
+            fontSize: 'Cỡ chữ',
+            letterSpacing: 'Giãn cách chữ',
+            fontFamily: 'Kiểu chữ',
+            sans: 'Không chân',
+            serif: 'Có chân',
+            mirror: 'Chế độ Gương',
+            normal: 'Bình thường',
+            mirrored: 'Gương'
+        },
+        shortcuts: {
+            title: 'Phím tắt',
+            dontShowAgain: "Không hiện lại",
+            confirm: 'OK',
+            categories: {
+                basic: 'Điều khiển Cơ bản',
+                view: 'Điều khiển Chế độ xem',
+                ui: 'Chuyển đổi Giao diện',
+                file: 'Quản lý Tập tin'
+            },
+            descriptions: {
+                togglePlay: 'Phát / Tạm dừng',
+                reset: 'Đặt lại về đầu',
+                fullscreen: 'Toàn màn hình',
+                presentation: 'Chế độ Trình chiếu',
+                editor: 'Mở Trình soạn thảo',
+                settings: 'Mở Cài đặt',
+                closeModal: 'Đóng',
+                save: 'Lưu Tập tin (.txt)',
+                open: 'Mở Tập tin (.txt)'
+            }
+        },
+        editor: {
+            title: 'Sửa Kịch bản',
+            import: 'Nhập tệp TXT',
+            download: 'Tải xuống',
+            placeholder: 'Nhập hoặc dán kịch bản của bạn vào đây...\n\nHỗ trợ Markdown:\n**Đậm**, *Nghiêng*, ~~Gạch ngang~~, __Gạch chân__',
+            cancel: 'Hủy',
+            apply: 'Áp dụng'
+        }
+    },
+    'th-TH': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'กำลังบันทึก...',
+            saved: 'บันทึกแล้ว',
+            saveError: 'บันทึกไม่สำเร็จ',
+            presentationMode: 'โหมดนำเสนอ',
+            fullscreen: 'เต็มหน้าจอ',
+            languageSelect: 'เลือกภาษา',
+            editScript: 'แก้ไขสคริปต์',
+            settings: 'ตั้งค่า'
+        },
+        modes: {
+            voice: 'โหมดเสียง',
+            manual: 'เลื่อนอัตโนมัติ'
+        },
+        about: {
+            title: 'เกี่ยวกับ',
+            version: 'เวอร์ชัน',
+            privacyTitle: 'นโยบายความเป็นส่วนตัว',
+            privacyContent: 'นโยบายความเป็นส่วนตัวสำหรับ Focus-prompter\n\nการเก็บรวบรวมข้อมูล: ส่วนขยายนี้ไม่เก็บรวบรวม จัดเก็บ หรือส่งข้อมูลส่วนบุคคลที่ระบุตัวตนได้\n\nข้อมูลเสียง: การจดจำเสียงจะถูกประมวลผลภายในเครื่องผ่าน Web Speech API ข้อมูลเสียงจะไม่ถูกส่งไปยังเซิร์ฟเวอร์ของเรา\n\nพื้นที่จัดเก็บภายในเครื่อง: สคริปต์และการตั้งค่าจะถูกจัดเก็บไว้ในพื้นที่จัดเก็บของเบราว์เซอร์ผู้ใช้เท่านั้น\n\nการแบ่งปันกับบุคคลที่สาม: ไม่มีการแบ่งปันข้อมูลกับบุคคลที่สาม',
+            close: 'ปิด'
+        },
+        actions: {
+            startListening: 'เริ่มฟัง',
+            stopListening: 'หยุด',
+            play: 'เล่น',
+            pause: 'หยุดชั่วคราว',
+            speed: 'ความเร็ว',
+            reset: 'รีเซ็ต'
+        },
+        settings: {
+            microphone: 'ไมโครโฟน',
+            fontSize: 'ขนาดตัวอักษร',
+            letterSpacing: 'ระยะห่างตัวอักษร',
+            fontFamily: 'รูปแบบตัวอักษร',
+            sans: 'ไม่มีเชิง (Sans)',
+            serif: 'มีเชิง (Serif)',
+            mirror: 'โหมดกระจก',
+            normal: 'ปกติ',
+            mirrored: 'กระจก'
+        },
+        shortcuts: {
+            title: 'แป้นพิมพ์ลัด',
+            dontShowAgain: "ไม่ต้องแสดงอีก",
+            confirm: 'ตกลง',
+            categories: {
+                basic: 'การควบคุมพื้นฐาน',
+                view: 'การควบคุมมุมมอง',
+                ui: 'สลับ UI',
+                file: 'การจัดการไฟล์'
+            },
+            descriptions: {
+                togglePlay: 'เล่น / หยุดชั่วคราว',
+                reset: 'รีเซ็ตไปที่เริ่มต้น',
+                fullscreen: 'สลับเต็มหน้าจอ',
+                presentation: 'โหมดนำเสนอ',
+                editor: 'เปิดตัวแก้ไข',
+                settings: 'เปิดการตั้งค่า',
+                closeModal: 'ปิด',
+                save: 'บันทึกไฟล์ (.txt)',
+                open: 'เปิดไฟล์ (.txt)'
+            }
+        },
+        editor: {
+            title: 'แก้ไขสคริปต์',
+            import: 'นำเข้าไฟล์ TXT',
+            download: 'ดาวน์โหลด',
+            placeholder: 'พิมพ์หรือวางสคริปต์ของคุณที่นี่...\n\nรองรับ Markdown:\n**ตัวหนา**, *ตัวเอียง*, ~~ขีดฆ่า~~, __ขีดเส้นใต้__',
+            cancel: 'ยกเลิก',
+            apply: 'นำไปใช้'
+        }
+    },
+    'id-ID': {
+        header: {
+            title: 'Focus Prompter',
+            saving: 'Menyimpan...',
+            saved: 'Tersimpan',
+            saveError: 'Gagal Menyimpan',
+            presentationMode: 'Mode Presentasi',
+            fullscreen: 'Layar Penuh',
+            languageSelect: 'Pilih Bahasa',
+            editScript: 'Edit Naskah',
+            settings: 'Pengaturan'
+        },
+        modes: {
+            voice: 'Mode Suara',
+            manual: 'Gulir Otomatis'
+        },
+        about: {
+            title: 'Tentang',
+            version: 'Versi',
+            privacyTitle: 'Kebijakan Privasi',
+            privacyContent: 'Kebijakan Privasi untuk Focus-prompter\n\nPengumpulan Data: Ekstensi ini tidak mengumpulkan, menyimpan, atau mengirimkan informasi identitas pribadi apa pun.\n\nData Audio: Pengenalan suara diproses secara lokal melalui Web Speech API. Data audio tidak pernah dikirim ke server kami.\n\nPenyimpanan Lokal: Naskah dan pengaturan disimpan secara ketat di penyimpanan browser lokal pengguna.\n\nBerbagi dengan Pihak Ketiga: Tidak ada data yang dibagikan dengan pihak ketiga.',
+            close: 'Tutup'
+        },
+        actions: {
+            startListening: 'Mulai',
+            stopListening: 'Berhenti',
+            play: 'Putar',
+            pause: 'Jeda',
+            speed: 'KECEPATAN',
+            reset: 'Reset'
+        },
+        settings: {
+            microphone: 'Mikrofon',
+            fontSize: 'Ukuran Font',
+            letterSpacing: 'Jarak Huruf',
+            fontFamily: 'Gaya Font',
+            sans: 'Sans-serif',
+            serif: 'Serif',
+            mirror: 'Mode Cermin',
+            normal: 'Normal',
+            mirrored: 'Cermin'
+        },
+        shortcuts: {
+            title: 'Pintasan Keyboard',
+            dontShowAgain: "Jangan tampilkan lagi",
+            confirm: 'OK',
+            categories: {
+                basic: 'Kontrol Dasar',
+                view: 'Kontrol Tampilan',
+                ui: 'Beralih UI',
+                file: 'Manajemen File'
+            },
+            descriptions: {
+                togglePlay: 'Putar / Jeda',
+                reset: 'Reset ke Awal',
+                fullscreen: 'Layar Penuh',
+                presentation: 'Mode Presentasi',
+                editor: 'Buka Editor',
+                settings: 'Buka Pengaturan',
+                closeModal: 'Tutup',
+                save: 'Simpan File (.txt)',
+                open: 'Buka File (.txt)'
+            }
+        },
+        editor: {
+            title: 'Edit Naskah',
+            import: 'Impor TXT',
+            download: 'Unduh',
+            placeholder: 'Ketik atau tempel naskah Anda di sini...\n\nMendukung Markdown:\n**Tebal**, *Miring*, ~~Coret~~, __Garis Bawah__',
+            cancel: 'Batal',
+            apply: 'Terapkan'
+        }
     }
 };
