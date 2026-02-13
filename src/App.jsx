@@ -246,6 +246,8 @@ const App = () => {
                     isSerif={isSerif}
                     wordRefs={wordRefs}
                     isMirrored={isMirrored}
+                    audioDeviceId={audioDeviceId}
+                    isListening={isListening}
                 />
             </div>
         );
@@ -351,6 +353,8 @@ const App = () => {
                 isSerif={isSerif}
                 wordRefs={wordRefs}
                 isMirrored={false} // Operator view always normal
+                audioDeviceId={audioDeviceId}
+                isListening={isListening}
                 onWordClick={(index) => {
                     if (mode === 'voice') {
                         setSpeechIndex(index - 1); // Set to index before target to make target next

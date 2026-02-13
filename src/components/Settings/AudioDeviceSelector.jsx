@@ -22,6 +22,10 @@ const AudioDeviceSelector = ({ selectedDeviceId, onDeviceChange, onStreamReady }
         if (selectedDeviceId && onStreamReady) {
             startMonitoring();
         }
+
+        return () => {
+            audioDeviceService.stopMonitoring();
+        };
     }, [selectedDeviceId]);
 
     const loadDevices = async () => {
