@@ -44,20 +44,30 @@ const useSpeechRecognition = (words, language = 'ko-KR') => {
             // Check for attached punctuation (English style: "Hello,")
             const hasAttachedPunctuation = /[.,!?;:。、]$/.test(matchedWord);
 
+            console.log('Smart Advance Debug:', {
+                matchedWord,
+                matchedIndex,
+                hasAttachedPunctuation,
+                nextWords: words.slice(matchedIndex + 1, matchedIndex + 4)
+            });
+
             if (hasAttachedPunctuation) {
                 // If attached, move to at least the next word
                 nextIndex++;
+                console.log('Attached punctuation found, advancing to:', nextIndex);
             } else {
                 // Check for separate punctuation tokens (CJK style: "Hello", "、")
                 // Look ahead for punctuation-only tokens
                 let tempIndex = matchedIndex + 1;
                 while (tempIndex < words.length && /^[.,!?;:。、\s]+$/.test(words[tempIndex])) {
+                    console.log(`Skipping punctuation token at ${tempIndex}:`, words[tempIndex]);
                     tempIndex++;
                 }
 
                 // If we skipped any punctuation, update nextIndex to the word AFTER it
                 if (tempIndex > matchedIndex + 1) {
                     nextIndex = tempIndex;
+                    console.log('Skipped separate punctuation, advancing to:', nextIndex);
                 }
             }
 
