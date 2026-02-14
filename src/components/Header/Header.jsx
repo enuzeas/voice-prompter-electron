@@ -67,6 +67,7 @@ const Header = ({
                         title={t('about.title')}
                     >
                         {t('header.title')}
+                        <span className="ml-2 text-xs text-gray-500 font-normal">v0.0.7</span>
                     </h1>
 
                     <ModeSelector
