@@ -22,7 +22,7 @@ const PrompterDisplay = ({
     return (
         <div
             ref={containerRef}
-            className={`flex-1 overflow-y-auto p-8 relative scroll-smooth no-scrollbar ${isSerif ? 'font-serif' : 'font-sans'
+            className={`flex-1 overflow-y-auto p-8 relative no-scrollbar ${isSerif ? 'font-serif' : 'font-sans'
                 }`}
             style={{
                 maskImage: 'linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)',
