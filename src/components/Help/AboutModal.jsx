@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Shield, Info } from 'lucide-react';
+import { version } from '../../../package.json';
 import useTranslation from '../../hooks/useTranslation';
 
 const AboutModal = ({ isOpen, onClose, currentLanguage }) => {
@@ -39,7 +40,7 @@ const AboutModal = ({ isOpen, onClose, currentLanguage }) => {
                         </div>
                         <h1 className="text-2xl font-bold text-white mb-1">Focus Prompter</h1>
                         <p className="text-sm text-gray-400 font-mono bg-gray-900/50 px-3 py-1 rounded-full border border-gray-700">
-                            v0.0.6
+                            v{version}
                         </p>
                     </div>
 

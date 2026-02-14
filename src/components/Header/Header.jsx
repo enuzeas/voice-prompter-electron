@@ -1,5 +1,6 @@
 import React from 'react';
 import { Settings, FileText, Cloud, Loader2, AlertCircle, Languages, Maximize2, MonitorPlay } from 'lucide-react';
+import { version } from '../../../package.json';
 import ModeSelector from './ModeSelector';
 import ActionButtons from './ActionButtons';
 import languages from '../../constants/languages';
@@ -67,7 +68,7 @@ const Header = ({
                         title={t('about.title')}
                     >
                         {t('header.title')}
-                        <span className="ml-2 text-xs text-gray-500 font-normal">v0.0.7</span>
+                        <span className="ml-2 text-xs text-gray-500 font-normal">v{version}</span>
                     </h1>
 
                     <ModeSelector
