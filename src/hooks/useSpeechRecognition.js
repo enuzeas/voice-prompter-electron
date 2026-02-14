@@ -37,12 +37,25 @@ const useSpeechRecognition = (words, language = 'ko-KR') => {
         );
 
         if (matchedIndex !== -1 && matchedIndex !== activeIndexRef.current) {
-            activeIndexRef.current = matchedIndex;
-            setActiveIndex(matchedIndex);
+            let nextIndex = matchedIndex;
+            const matchedWord = words[matchedIndex];
 
-            // Scroll to matched word
-            if (wordRefs.current[matchedIndex]) {
-                wordRefs.current[matchedIndex].scrollIntoView({
+            // Smart Sentence Advance:
+            // If the word ends with punctuation OR is punctuation (common in CJK),
+            // automatically advance to the next word to help flow.
+            // Checks for . , ! ? ; : and common CJK punctuation 。 、
+            const isPunctuationOrHasSuffix = /[.,!?;:。、]$/.test(matchedWord);
+
+            if (isPunctuationOrHasSuffix && matchedIndex + 1 < words.length) {
+                nextIndex = matchedIndex + 1;
+            }
+
+            activeIndexRef.current = nextIndex;
+            setActiveIndex(nextIndex);
+
+            // Scroll to matched word (or the next one if skipped)
+            if (wordRefs.current[nextIndex]) {
+                wordRefs.current[nextIndex].scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
                 });
