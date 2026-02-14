@@ -40,14 +40,30 @@ const useSpeechRecognition = (words, language = 'ko-KR') => {
             let nextIndex = matchedIndex;
             const matchedWord = words[matchedIndex];
 
-            // Smart Sentence Advance:
-            // If the word ends with punctuation OR is punctuation (common in CJK),
-            // automatically advance to the next word to help flow.
-            // Checks for . , ! ? ; : and common CJK punctuation 。 、
-            const isPunctuationOrHasSuffix = /[.,!?;:。、]$/.test(matchedWord);
+            // Smart Sentence Advance Logic
+            // Check for attached punctuation (English style: "Hello,")
+            const hasAttachedPunctuation = /[.,!?;:。、]$/.test(matchedWord);
 
-            if (isPunctuationOrHasSuffix && matchedIndex + 1 < words.length) {
-                nextIndex = matchedIndex + 1;
+            if (hasAttachedPunctuation) {
+                // If attached, move to at least the next word
+                nextIndex++;
+            } else {
+                // Check for separate punctuation tokens (CJK style: "Hello", "、")
+                // Look ahead for punctuation-only tokens
+                let tempIndex = matchedIndex + 1;
+                while (tempIndex < words.length && /^[.,!?;:。、\s]+$/.test(words[tempIndex])) {
+                    tempIndex++;
+                }
+
+                // If we skipped any punctuation, update nextIndex to the word AFTER it
+                if (tempIndex > matchedIndex + 1) {
+                    nextIndex = tempIndex;
+                }
+            }
+
+            // Ensure we don't go out of bounds
+            if (nextIndex >= words.length) {
+                nextIndex = words.length - 1;
             }
 
             activeIndexRef.current = nextIndex;
