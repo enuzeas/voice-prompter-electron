@@ -41,36 +41,26 @@ const useSpeechRecognition = (words, language = 'ko-KR') => {
             const matchedWord = words[matchedIndex];
 
             // Smart Sentence Advance Logic
-            // Check for attached punctuation (English style: "Hello,")
-            const hasAttachedPunctuation = /[.,!?;:。、]$/.test(matchedWord);
+            // The default behavior highlights activeIndex + 1.
+            // If the current word has attached punctuation (e.g., "Hello,"), matchedIndex points to it.
+            // So activeIndex = matchedIndex. Renderer highlights matchedIndex + 1. Correct.
+            // We ONLY need to advance if there are SEPARATE punctuation tokens (common in CJK/Intl.Segmenter).
 
-            console.log('Smart Advance Debug:', {
-                matchedWord,
-                matchedIndex,
-                hasAttachedPunctuation,
-                nextWords: words.slice(matchedIndex + 1, matchedIndex + 4)
-            });
-
-            if (hasAttachedPunctuation) {
-                // If attached, move to at least the next word
-                nextIndex = matchedIndex + 1;
-                console.log('Attached punctuation found, initial move to:', nextIndex);
-            }
-
-            // Check for separate punctuation tokens (CJK style: "Hello", "、")
-            // Look ahead for punctuation-only tokens and skip them
-            // STRICT REGEX: Only skip actual punctuation, NOT whitespace (which shouldn't be here) or other characters
-            // Removed \s to be safe
-            let tempIndex = nextIndex;
+            // Check for separate punctuation tokens (e.g., "Hello", ",", "World")
+            // Look ahead for punctuation-only tokens
+            // STRICT REGEX: Only skip actual punctuation
+            let tempIndex = matchedIndex + 1;
             while (tempIndex < words.length && /^[.,!?;:。、]+$/.test(words[tempIndex])) {
                 console.log(`Skipping punctuation token at ${tempIndex}:`, words[tempIndex]);
                 tempIndex++;
             }
 
-            // Update nextIndex if we advanced
-            if (tempIndex > nextIndex) {
-                nextIndex = tempIndex;
-                console.log('Advanced past punctuation to:', nextIndex);
+            // If we skipped any punctuation tokens, we update nextIndex to the LAST punctuation token.
+            // Why? Because WordRenderer highlights activeIndex + 1.
+            // If we set activeIndex to the punctuation token, the renderer will highlight the word AFTER it.
+            if (tempIndex > matchedIndex + 1) {
+                nextIndex = tempIndex - 1;
+                console.log('Advanced past separate punctuation. New activeIndex:', nextIndex);
             }
 
             // Ensure we don't go out of bounds
