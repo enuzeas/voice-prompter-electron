@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import WordRenderer from './WordRenderer';
 import useAudioLevel from '../../hooks/useAudioLevel';
 
@@ -17,7 +17,8 @@ const PrompterDisplay = ({
     isListening,
     onWordClick
 }) => {
-    const audioLevel = useAudioLevel(audioDeviceId, mode === 'voice' && isListening);
+    const audioGlowRef = useRef(null);
+    useAudioLevel(audioDeviceId, mode === 'voice' && isListening, audioGlowRef);
 
     return (
         <div
@@ -31,21 +32,22 @@ const PrompterDisplay = ({
         >
             {/* Eye Level Guide */}
             <div className="fixed top-1/2 left-0 w-full h-px bg-yellow-500/30 pointer-events-none z-20 flex items-center justify-center">
-                <div className="relative flex items-center justify-center">
+                <div ref={audioGlowRef} className="relative flex items-center justify-center">
                     {/* Audio Reactive Glow */}
                     {mode === 'voice' && isListening && (
                         <div
-                            className="absolute inset-0 bg-green-500/50 blur-md rounded-full transition-all duration-75"
+                            className="absolute inset-0 bg-green-500/50 blur-md rounded-full transition-transform duration-75 ease-out"
                             style={{
-                                opacity: Math.max(0.2, audioLevel / 100),
-                                transform: `scale(${1 + (audioLevel / 100) * 0.5})`
+                                opacity: 'var(--audio-opacity, 0.2)',
+                                transform: 'scale(var(--audio-scale, 1))'
                             }}
                         />
                     )}
 
-                    <div className={`relative px-3 py-1 rounded-full border backdrop-blur transition-colors duration-300 ${mode === 'voice' && isListening && audioLevel > 5 ? 'bg-green-900/40 border-green-500/50' : 'bg-black/50 border-yellow-500/30'
-                        }`}>
-                        <span className={`text-[10px] font-bold tracking-widest transition-colors duration-300 ${mode === 'voice' && isListening && audioLevel > 5 ? 'text-green-400' : 'text-yellow-500'
+                    <div className={`relative px-3 py-1 rounded-full border backdrop-blur transition-all duration-300 ${mode === 'voice' && isListening ? 'bg-black/50 border-yellow-500/30' : 'bg-black/50 border-yellow-500/30'
+                        }`}
+                    >
+                        <span className={`text-[10px] font-bold tracking-widest transition-colors duration-300 ${mode === 'voice' && isListening ? 'text-yellow-500' : 'text-yellow-500'
                             }`}>
                             {mode === 'voice' ? 'EYE LEVEL' : 'READING LINE'}
                         </span>

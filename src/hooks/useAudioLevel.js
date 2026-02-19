@@ -1,29 +1,48 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const useAudioLevel = (deviceId, isEnabled) => {
-    const [audioLevel, setAudioLevel] = useState(0);
+const useAudioLevel = (deviceId, isEnabled, targetRef) => {
     const audioContextRef = useRef(null);
     const analyserRef = useRef(null);
     const sourceRef = useRef(null);
     const streamRef = useRef(null);
     const animationFrameRef = useRef(null);
+    const prevLevelRef = useRef(0);
 
     useEffect(() => {
-        if (!isEnabled || !deviceId) {
-            console.log('Audio monitoring disabled or no deviceId:', { isEnabled, deviceId });
+        const cleanup = () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+                animationFrameRef.current = null;
+            }
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach(track => { track.stop(); });
+                streamRef.current = null;
+            }
+            if (audioContextRef.current) {
+                audioContextRef.current.close();
+                audioContextRef.current = null;
+            }
+            analyserRef.current = null;
+            sourceRef.current = null;
+            prevLevelRef.current = 0;
+        };
+
+        if (!isEnabled || !deviceId || !targetRef) {
             cleanup();
-            setAudioLevel(0);
+            if (targetRef?.current) {
+                targetRef.current.style.setProperty('--audio-level', '0');
+                targetRef.current.style.setProperty('--audio-scale', '1');
+                targetRef.current.style.setProperty('--audio-opacity', '0.2');
+            }
             return;
         }
 
         const startMonitoring = async () => {
-            console.log('Starting audio monitoring for device:', deviceId);
             try {
                 if (streamRef.current) {
                     cleanup();
                 }
 
-                // Handle 'default' device explicitly
                 const constraints = {
                     audio: {
                         echoCancellation: true,
@@ -36,17 +55,13 @@ const useAudioLevel = (deviceId, isEnabled) => {
                     constraints.audio.deviceId = { exact: deviceId };
                 }
 
-                console.log('Requesting user media with constraints:', constraints);
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                console.log('Stream acquired:', stream.id);
-
                 streamRef.current = stream;
 
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                 audioContextRef.current = new AudioContextClass();
 
                 if (audioContextRef.current.state === 'suspended') {
-                    console.log('AudioContext suspended, attempting to resume...');
                     await audioContextRef.current.resume();
                 }
 
@@ -56,13 +71,13 @@ const useAudioLevel = (deviceId, isEnabled) => {
                 sourceRef.current.connect(analyserRef.current);
 
                 analyserRef.current.fftSize = 256;
-                analyserRef.current.smoothingTimeConstant = 0.5; // Responsive but not too jittery
+                analyserRef.current.smoothingTimeConstant = 0.5;
 
                 const bufferLength = analyserRef.current.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
 
                 const updateLevel = () => {
-                    if (!analyserRef.current) return;
+                    if (!analyserRef.current || !targetRef.current) return;
 
                     analyserRef.current.getByteFrequencyData(dataArray);
 
@@ -72,17 +87,18 @@ const useAudioLevel = (deviceId, isEnabled) => {
                     }
                     const average = sum / bufferLength;
 
-                    // Normalize roughly to 0-100 range, amplifying lower volumes slightly
-                    // Typical speech might be around 20-60 in raw average
                     const normalized = Math.min(100, Math.round((average / 128) * 100 * 1.5));
 
-                    setAudioLevel(prev => {
-                        // Smooth decay
-                        if (normalized < prev) {
-                            return Math.max(0, prev - 5);
-                        }
-                        return normalized;
-                    });
+                    let currentLevel = normalized;
+                    if (normalized < prevLevelRef.current) {
+                        currentLevel = Math.max(0, prevLevelRef.current - 5);
+                    }
+                    prevLevelRef.current = currentLevel;
+
+                    const target = targetRef.current;
+                    target.style.setProperty('--audio-level', currentLevel.toString());
+                    target.style.setProperty('--audio-scale', (1 + (currentLevel / 100) * 0.5).toFixed(2));
+                    target.style.setProperty('--audio-opacity', Math.max(0.2, currentLevel / 100).toFixed(2));
 
                     animationFrameRef.current = requestAnimationFrame(updateLevel);
                 };
@@ -91,7 +107,6 @@ const useAudioLevel = (deviceId, isEnabled) => {
 
             } catch (error) {
                 console.error('Error accessing microphone:', error);
-                setAudioLevel(0);
             }
         };
 
@@ -100,25 +115,7 @@ const useAudioLevel = (deviceId, isEnabled) => {
         return () => {
             cleanup();
         };
-    }, [deviceId, isEnabled]);
-
-    const cleanup = () => {
-        if (animationFrameRef.current) {
-            cancelAnimationFrame(animationFrameRef.current);
-        }
-        if (streamRef.current) {
-            streamRef.current.getTracks().forEach(track => track.stop());
-            streamRef.current = null;
-        }
-        if (audioContextRef.current) {
-            audioContextRef.current.close();
-            audioContextRef.current = null;
-        }
-        analyserRef.current = null;
-        sourceRef.current = null;
-    };
-
-    return audioLevel;
+    }, [deviceId, isEnabled, targetRef]);
 };
 
 export default useAudioLevel;
