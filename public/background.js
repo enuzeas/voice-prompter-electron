@@ -4,25 +4,16 @@
  */
 
 chrome.action.onClicked.addListener(() => {
-    // Check if window already exists
-    chrome.windows.getAll({ populate: true, windowTypes: ['popup'] }, (windows) => {
-        const existingWindow = windows.find(w =>
-            w.tabs.some(t => t.url.includes('index.html'))
-        );
+    const appUrl = chrome.runtime.getURL('index.html');
 
-        if (existingWindow) {
-            // Focus existing window
-            chrome.windows.update(existingWindow.id, { focused: true });
+    chrome.tabs.query({ url: appUrl }, (tabs) => {
+        if (tabs.length > 0) {
+            // 이미 열려있는 탭이 있다면 해당 탭으로 포커스 이동
+            chrome.tabs.update(tabs[0].id, { active: true });
+            chrome.windows.update(tabs[0].windowId, { focused: true });
         } else {
-            // Create new window
-            // Width/Height slightly larger to accommodate UI comfortably
-            chrome.windows.create({
-                url: 'index.html',
-                type: 'popup',
-                width: 500,
-                height: 800,
-                focused: true
-            });
+            // 현재 크롬 창에 새로운 탭으로 열기
+            chrome.tabs.create({ url: 'index.html' });
         }
     });
 });
