@@ -95,7 +95,8 @@ const App = () => {
         presentationActiveIndex,
         openPresentation,
         closePresentation,
-        updatePresentationIndex
+        updatePresentationIndex,
+        updatePresentationScroll
     } = usePresentationMode(
         config, // scriptData
         config, // settings
@@ -107,7 +108,17 @@ const App = () => {
         // Callbacks for presentation window to receive updates
         (newMode) => setMode(newMode),
         (listening) => listening ? startListening() : stopListening(),
-        (playing) => playing ? startScroll() : stopScroll()
+        (playing) => playing ? startScroll() : stopScroll(),
+        // 11th argument: Scroll synchronization callback for presentation window
+        (scrollTop) => {
+            if (isPresentationWindow && containerRef.current) {
+                requestAnimationFrame(() => {
+                    if (containerRef.current) {
+                        containerRef.current.scrollTop = scrollTop;
+                    }
+                });
+            }
+        }
     );
 
     // Sync active index with presentation window
@@ -116,6 +127,32 @@ const App = () => {
             updatePresentationIndex(activeIndex);
         }
     }, [activeIndex, isPresentationMode, updatePresentationIndex]);
+
+    // Track scroll position in operator window and send to presentation
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container || !isPresentationMode || isPresentationWindow) return;
+
+        let lastScrollTop = container.scrollTop;
+        let ticking = false;
+
+        const handleScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const currentScrollTop = container.scrollTop;
+                    if (Math.abs(currentScrollTop - lastScrollTop) > 1) {
+                        updatePresentationScroll(currentScrollTop);
+                        lastScrollTop = currentScrollTop;
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        return () => container.removeEventListener('scroll', handleScroll);
+    }, [isPresentationMode, isPresentationWindow, updatePresentationScroll]);
 
     // Auto-scroll to active word in Presentation Window
     useEffect(() => {

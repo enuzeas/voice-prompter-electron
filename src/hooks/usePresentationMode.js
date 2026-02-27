@@ -4,7 +4,7 @@ import presentationService from '../services/presentation.service';
 /**
  * Custom hook for presentation mode
  */
-const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex, mode, isListening, isPlaying, onModeUpdate, onIsListeningUpdate, onIsPlayingUpdate) => {
+const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex, mode, isListening, isPlaying, onModeUpdate, onIsListeningUpdate, onIsPlayingUpdate, onScrollUpdate) => {
     const [isPresentationMode, setIsPresentationMode] = useState(false);
     const [presentationActiveIndex, setPresentationActiveIndex] = useState(0);
     const isPresentationWindowRef = useRef(false);
@@ -41,6 +41,8 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
                     if (onIsListeningUpdate) onIsListeningUpdate(message.data);
                 } else if (message.type === 'update-is-playing') {
                     if (onIsPlayingUpdate) onIsPlayingUpdate(message.data);
+                } else if (message.type === 'update-scroll-top') {
+                    if (onScrollUpdate) onScrollUpdate(message.data);
                 }
             });
         }
@@ -108,6 +110,13 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
         // For extension, we can't directly close the window from here easily
         // The user would close it manually.
         setIsPresentationMode(false);
+    };
+
+    // Send scroll update to presentation window
+    const updatePresentationScroll = (scrollTop) => {
+        if (isPresentationMode && !isPresentationWindowRef.current) {
+            presentationService.sendUpdate('update-scroll-top', scrollTop);
+        }
     };
 
     // Send active index update to presentation window
