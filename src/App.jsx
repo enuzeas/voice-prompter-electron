@@ -57,6 +57,12 @@ const App = () => {
     // Process script to words
     const words = useMemo(() => processScriptToWords(scriptText, config.language), [scriptText, config.language]);
 
+    // Detect if current window is the presentation window (static)
+    const isPresentationWindow = useMemo(() => {
+        const urlParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+        return urlParams.get('mode') === 'presentation';
+    }, []);
+
     // Sync currentLanguage with config.language when config loads
     useEffect(() => {
         if (config.language && config.language !== currentLanguage) {
@@ -92,12 +98,7 @@ const App = () => {
         pause: stopScroll
     } = useAutoScroll(containerRef, manualSpeed);
 
-    // Effective states based on window type
-    const isListening = isPresentationWindow ? remoteIsListening : localIsListening;
-    const isPlaying = isPresentationWindow ? remoteIsPlaying : localIsPlaying;
-    const activeIndex = isPresentationWindow ? presentationActiveIndex : localActiveIndex;
-
-    // Presentation mode synchronization
+    // Presentation mode synchronization callbacks
     const presentationCallbacks = useMemo(() => ({
         onSettingsUpdate: updateConfig,
         onModeUpdate: (newMode) => setMode(newMode),
@@ -117,7 +118,6 @@ const App = () => {
         },
         onScrollUpdate: (scrollTop) => {
             if (containerRef.current) {
-                // Use requestAnimationFrame to ensure smooth UI update
                 requestAnimationFrame(() => {
                     if (containerRef.current) {
                         containerRef.current.scrollTop = scrollTop;
@@ -127,9 +127,9 @@ const App = () => {
         }
     }), [updateConfig, isPresentationWindow, startListening, stopListening, startScroll, stopScroll]);
 
+    // Presentation Mode Hook
     const {
         isPresentationMode,
-        isPresentationWindow,
         presentationActiveIndex,
         openPresentation,
         closePresentation,
@@ -139,15 +139,37 @@ const App = () => {
         config, // scriptData
         config, // settings
         presentationCallbacks.onSettingsUpdate,
-        activeIndex,
+        localActiveIndex,
         mode,
-        isListening,
-        isPlaying,
+        localIsListening,
+        localIsPlaying,
         presentationCallbacks.onModeUpdate,
         presentationCallbacks.onIsListeningUpdate,
         presentationCallbacks.onIsPlayingUpdate,
         presentationCallbacks.onScrollUpdate
     );
+
+    // Effective states based on window type
+    const isListening = isPresentationWindow ? remoteIsListening : localIsListening;
+    const isPlaying = isPresentationWindow ? remoteIsPlaying : localIsPlaying;
+    const activeIndex = isPresentationWindow ? presentationActiveIndex : localActiveIndex;
+
+    // Now call usePresentationMode with the callbacks
+    // (We re-destructure or just move the hook call here)
+    // To keep it simple, I'll move the hook call BELOW the callbacks.
+    // PresentationActiveIndex will then be available.
+
+    // But wait, activeIndex etc still need to be defined.
+    // I will use local versions for the hook arguments.
+
+    // Final Order:
+    // 1. isPresentationWindow
+    // 2. local hooks (useSpeechRecognition, useAutoScroll)
+    // 3. remote states (remoteIsListening, remoteIsPlaying)
+    // 4. presentationCallbacks
+    // 5. usePresentationMode (gets local states as input, returns presentationActiveIndex)
+    // 6. Effective states (use presentationActiveIndex from #5)
+    // 7. Render logic uses Effective states.
 
     // Sync active index with presentation window
     useEffect(() => {
