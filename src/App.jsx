@@ -89,6 +89,23 @@ const App = () => {
     } = useAutoScroll(containerRef, manualSpeed);
 
     // Presentation mode synchronization
+    const presentationCallbacks = useMemo(() => ({
+        onSettingsUpdate: updateConfig,
+        onModeUpdate: (newMode) => setMode(newMode),
+        onIsListeningUpdate: (listening) => listening ? startListening() : stopListening(),
+        onIsPlayingUpdate: (playing) => playing ? startScroll() : stopScroll(),
+        onScrollUpdate: (scrollTop) => {
+            if (containerRef.current) {
+                // Use requestAnimationFrame to ensure smooth UI update
+                requestAnimationFrame(() => {
+                    if (containerRef.current) {
+                        containerRef.current.scrollTop = scrollTop;
+                    }
+                });
+            }
+        }
+    }), [updateConfig, startListening, stopListening, startScroll, stopScroll]);
+
     const {
         isPresentationMode,
         isPresentationWindow,
@@ -100,33 +117,23 @@ const App = () => {
     } = usePresentationMode(
         config, // scriptData
         config, // settings
-        updateConfig, // onSettingsUpdate
+        presentationCallbacks.onSettingsUpdate,
         activeIndex,
         mode,
         isListening,
         isPlaying,
-        // Callbacks for presentation window to receive updates
-        (newMode) => setMode(newMode),
-        (listening) => listening ? startListening() : stopListening(),
-        (playing) => playing ? startScroll() : stopScroll(),
-        // 11th argument: Scroll synchronization callback for presentation window
-        (scrollTop) => {
-            if (isPresentationWindow && containerRef.current) {
-                requestAnimationFrame(() => {
-                    if (containerRef.current) {
-                        containerRef.current.scrollTop = scrollTop;
-                    }
-                });
-            }
-        }
+        presentationCallbacks.onModeUpdate,
+        presentationCallbacks.onIsListeningUpdate,
+        presentationCallbacks.onIsPlayingUpdate,
+        presentationCallbacks.onScrollUpdate
     );
 
     // Sync active index with presentation window
     useEffect(() => {
-        if (isPresentationMode) {
+        if (isPresentationMode && !isPresentationWindow) {
             updatePresentationIndex(activeIndex);
         }
-    }, [activeIndex, isPresentationMode, updatePresentationIndex]);
+    }, [activeIndex, isPresentationMode, isPresentationWindow, updatePresentationIndex]);
 
     // Track scroll position in operator window and send to presentation
     useEffect(() => {
@@ -140,18 +147,31 @@ const App = () => {
             if (!ticking) {
                 requestAnimationFrame(() => {
                     const currentScrollTop = container.scrollTop;
-                    if (Math.abs(currentScrollTop - lastScrollTop) > 1) {
-                        updatePresentationScroll(currentScrollTop);
-                        lastScrollTop = currentScrollTop;
-                    }
+                    // Send every scroll update for perfect sync
+                    updatePresentationScroll(currentScrollTop);
+                    lastScrollTop = currentScrollTop;
                     ticking = false;
                 });
                 ticking = true;
             }
         };
 
+        // Explicitly capture wheel events for manual scroll sync
+        const handleWheel = () => {
+            // After a wheel event, the scroll position will change, 
+            // and our scroll listener will handle the sync.
+            // But we can also trigger a sync check immediately.
+            requestAnimationFrame(() => {
+                updatePresentationScroll(container.scrollTop);
+            });
+        };
+
         container.addEventListener('scroll', handleScroll, { passive: true });
-        return () => container.removeEventListener('scroll', handleScroll);
+        container.addEventListener('wheel', handleWheel, { passive: true });
+        return () => {
+            container.removeEventListener('scroll', handleScroll);
+            container.removeEventListener('wheel', handleWheel);
+        };
     }, [isPresentationMode, isPresentationWindow, updatePresentationScroll]);
 
     // Auto-scroll to active word in Presentation Window

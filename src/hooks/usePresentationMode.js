@@ -5,31 +5,32 @@ import presentationService from '../services/presentation.service';
  * Custom hook for presentation mode
  */
 const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex, mode, isListening, isPlaying, onModeUpdate, onIsListeningUpdate, onIsPlayingUpdate, onScrollUpdate) => {
+    // Initial check for presentation window mode (static after load)
+    const [isPresentationWindow, setIsPresentationWindow] = useState(() => {
+        const urlParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+        return urlParams.get('mode') === 'presentation';
+    });
+
     const [isPresentationMode, setIsPresentationMode] = useState(false);
     const [presentationActiveIndex, setPresentationActiveIndex] = useState(0);
-    const isPresentationWindowRef = useRef(false);
     const presentationWindowRef = useRef(null);
 
-    // Check if running in presentation window
+    // Fullscreen for presentation window
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        isPresentationWindowRef.current = urlParams.get('mode') === 'presentation';
-
-        if (isPresentationWindowRef.current) {
-            // Request fullscreen in presentation window
+        if (isPresentationWindow) {
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen().catch(err => {
                     console.log('Fullscreen request failed:', err);
                 });
             }
         }
-    }, []);
+    }, [isPresentationWindow]);
 
     // Listen for messages from main window
     useEffect(() => {
         presentationService.initialize();
 
-        if (isPresentationWindowRef.current) {
+        if (isPresentationWindow) {
             presentationService.onMessage((message) => {
                 if (message.type === 'update-active-index') {
                     setPresentationActiveIndex(message.data);
@@ -46,7 +47,7 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
                 }
             });
         }
-    }, []);
+    }, [isPresentationWindow, onSettingsUpdate, onModeUpdate, onIsListeningUpdate, onIsPlayingUpdate, onScrollUpdate]);
 
     // Open presentation window
     const openPresentation = useCallback(() => {
@@ -113,52 +114,53 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
     };
 
     // Send scroll update to presentation window
-    const updatePresentationScroll = (scrollTop) => {
-        if (isPresentationMode && !isPresentationWindowRef.current) {
+    const updatePresentationScroll = useCallback((scrollTop) => {
+        if (isPresentationMode && !isPresentationWindow) {
             presentationService.sendUpdate('update-scroll-top', scrollTop);
         }
-    };
+    }, [isPresentationMode, isPresentationWindow]);
 
     // Send active index update to presentation window
-    const updatePresentationIndex = (index) => {
+    const updatePresentationIndex = useCallback((index) => {
         if (isPresentationMode) {
             presentationService.sendUpdate('update-active-index', index);
         }
-    };
+    }, [isPresentationMode]);
 
     // Sync settings to presentation window
     useEffect(() => {
-        if (isPresentationMode && !isPresentationWindowRef.current) {
+        if (isPresentationMode && !isPresentationWindow) {
             presentationService.sendUpdate('update-settings', settings);
         }
-    }, [settings, isPresentationMode]);
+    }, [settings, isPresentationMode, isPresentationWindow]);
 
     // Sync mode and playing states
     useEffect(() => {
-        if (isPresentationMode && !isPresentationWindowRef.current) {
+        if (isPresentationMode && !isPresentationWindow) {
             presentationService.sendUpdate('update-mode', mode);
         }
-    }, [mode, isPresentationMode]);
+    }, [mode, isPresentationMode, isPresentationWindow]);
 
     useEffect(() => {
-        if (isPresentationMode && !isPresentationWindowRef.current) {
+        if (isPresentationMode && !isPresentationWindow) {
             presentationService.sendUpdate('update-is-listening', isListening);
         }
-    }, [isListening, isPresentationMode]);
+    }, [isListening, isPresentationMode, isPresentationWindow]);
 
     useEffect(() => {
-        if (isPresentationMode && !isPresentationWindowRef.current) {
+        if (isPresentationMode && !isPresentationWindow) {
             presentationService.sendUpdate('update-is-playing', isPlaying);
         }
-    }, [isPlaying, isPresentationMode]);
+    }, [isPlaying, isPresentationMode, isPresentationWindow]);
 
     return {
         isPresentationMode,
-        isPresentationWindow: isPresentationWindowRef.current,
+        isPresentationWindow,
         presentationActiveIndex,
         openPresentation,
         closePresentation,
-        updatePresentationIndex
+        updatePresentationIndex,
+        updatePresentationScroll
     };
 };
 
