@@ -1,6 +1,11 @@
 /**
  * Audio Device Selection Service
- * Provides microphone selection and audio level monitoring
+ * Provides microphone selection and audio level monitoring.
+ * 
+ * NOTE: While this service allows selecting a specific device for audio level monitoring,
+ * the Web Speech API (SpeechRecognition) used for voice tracking currently defaults to 
+ * the system/browser default microphone. Selecting a device here affects the visual 
+ * level meter, but not necessarily the speech engine itself in all browsers.
  */
 class AudioDeviceService {
     constructor() {

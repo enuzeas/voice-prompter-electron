@@ -12,9 +12,20 @@ const AudioDeviceSelector = ({ selectedDeviceId, onDeviceChange, onStreamReady }
     const [isMonitoring, setIsMonitoring] = useState(false);
     const [audioLevel, setAudioLevel] = useState(0);
 
-    // Load available devices on mount
+    // Load available devices on mount and listen for changes
     useEffect(() => {
         loadDevices();
+
+        // Listen for hardware changes (plugging/unplugging)
+        if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+            navigator.mediaDevices.addEventListener('devicechange', loadDevices);
+        }
+
+        return () => {
+            if (navigator.mediaDevices && navigator.mediaDevices.removeEventListener) {
+                navigator.mediaDevices.removeEventListener('devicechange', loadDevices);
+            }
+        };
     }, []);
 
     // Start monitoring when device is selected
