@@ -74,10 +74,21 @@ const App = () => {
         toggleListening,
         resetPosition: resetSpeechPosition,
         setLanguage: setSpeechLanguage,
-        setSpeechIndex
+        setSpeechIndex,
+        startListening,
+        stopListening
     } = useSpeechRecognition(words, currentLanguage);
 
-    // Presentation mode
+    // Auto scroll
+    const {
+        isPlaying,
+        togglePlay,
+        reset: resetScroll,
+        play: startScroll,
+        pause: stopScroll
+    } = useAutoScroll(containerRef, manualSpeed);
+
+    // Presentation mode synchronization
     const {
         isPresentationMode,
         isPresentationWindow,
@@ -86,10 +97,17 @@ const App = () => {
         closePresentation,
         updatePresentationIndex
     } = usePresentationMode(
-        config, // scriptData (using config as it has scriptText)
+        config, // scriptData
         config, // settings
         updateConfig, // onSettingsUpdate
-        activeIndex // activeIndex
+        activeIndex,
+        mode,
+        isListening,
+        isPlaying,
+        // Callbacks for presentation window to receive updates
+        (newMode) => setMode(newMode),
+        (listening) => listening ? startListening() : stopListening(),
+        (playing) => playing ? startScroll() : stopScroll()
     );
 
     // Sync active index with presentation window
@@ -108,13 +126,6 @@ const App = () => {
             });
         }
     }, [isPresentationWindow, presentationActiveIndex, words]);
-
-    // Auto scroll
-    const {
-        isPlaying,
-        togglePlay,
-        reset: resetScroll
-    } = useAutoScroll(containerRef, manualSpeed);
 
     // Update scroll speed when config changes
     useEffect(() => {

@@ -4,7 +4,7 @@ import presentationService from '../services/presentation.service';
 /**
  * Custom hook for presentation mode
  */
-const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex) => {
+const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex, mode, isListening, isPlaying, onModeUpdate, onIsListeningUpdate, onIsPlayingUpdate) => {
     const [isPresentationMode, setIsPresentationMode] = useState(false);
     const [presentationActiveIndex, setPresentationActiveIndex] = useState(0);
     const isPresentationWindowRef = useRef(false);
@@ -34,9 +34,13 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
                 if (message.type === 'update-active-index') {
                     setPresentationActiveIndex(message.data);
                 } else if (message.type === 'update-settings') {
-                    if (onSettingsUpdate) {
-                        onSettingsUpdate(message.data);
-                    }
+                    if (onSettingsUpdate) onSettingsUpdate(message.data);
+                } else if (message.type === 'update-mode') {
+                    if (onModeUpdate) onModeUpdate(message.data);
+                } else if (message.type === 'update-is-listening') {
+                    if (onIsListeningUpdate) onIsListeningUpdate(message.data);
+                } else if (message.type === 'update-is-playing') {
+                    if (onIsPlayingUpdate) onIsPlayingUpdate(message.data);
                 }
             });
         }
@@ -119,6 +123,25 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
             presentationService.sendUpdate('update-settings', settings);
         }
     }, [settings, isPresentationMode]);
+
+    // Sync mode and playing states
+    useEffect(() => {
+        if (isPresentationMode && !isPresentationWindowRef.current) {
+            presentationService.sendUpdate('update-mode', mode);
+        }
+    }, [mode, isPresentationMode]);
+
+    useEffect(() => {
+        if (isPresentationMode && !isPresentationWindowRef.current) {
+            presentationService.sendUpdate('update-is-listening', isListening);
+        }
+    }, [isListening, isPresentationMode]);
+
+    useEffect(() => {
+        if (isPresentationMode && !isPresentationWindowRef.current) {
+            presentationService.sendUpdate('update-is-playing', isPlaying);
+        }
+    }, [isPlaying, isPresentationMode]);
 
     return {
         isPresentationMode,
