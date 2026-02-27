@@ -47,7 +47,8 @@ const ShortcutModal = ({ isOpen, onClose, currentLanguage }) => {
             'OPEN_SETTINGS': 'settings',
             'CLOSE_MODAL': 'closeModal',
             'SAVE_FILE': 'save',
-            'OPEN_FILE': 'open'
+            'OPEN_FILE': 'open',
+            'SPEED_SET': 'speedSet'
         };
         const transKey = mapping[key];
         return transKey ? t(`shortcuts.descriptions.${transKey}`) : '';
@@ -80,7 +81,7 @@ const ShortcutModal = ({ isOpen, onClose, currentLanguage }) => {
 
                         // Let's redefine the grouping logic to be safer
                         let keys = [];
-                        if (originalCategory === '기본 조작') keys = ['TOGGLE_PLAY', 'RESET'];
+                        if (originalCategory === '기본 조작') keys = ['TOGGLE_PLAY', 'RESET', 'SPEED_SET'];
                         if (originalCategory === '화면 제어') keys = ['FULLSCREEN', 'PRESENTATION_MODE'];
                         if (originalCategory === 'UI 토글') keys = ['OPEN_EDITOR', 'OPEN_SETTINGS', 'CLOSE_MODAL'];
                         if (originalCategory === '파일 관리') keys = ['SAVE_FILE', 'OPEN_FILE'];
@@ -100,7 +101,7 @@ const ShortcutModal = ({ isOpen, onClose, currentLanguage }) => {
                                                     {getDescription(key)}
                                                 </span>
                                                 <kbd className="bg-gray-900 text-gray-200 px-2 py-1 rounded border border-gray-600 font-mono text-xs shadow-sm whitespace-nowrap">
-                                                    {getShortcutString(shortcut)}
+                                                    {key === 'SPEED_SET' ? '1 - 9' : getShortcutString(shortcut)}
                                                 </kbd>
                                             </li>
                                         );

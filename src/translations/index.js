@@ -61,7 +61,8 @@ export const translations = {
                 settings: '설정 패널 열기',
                 closeModal: '창 닫기',
                 save: '파일 저장 (.txt)',
-                open: '파일 열기 (.txt)'
+                open: '파일 열기 (.txt)',
+                speedSet: '스크롤 속도 설정 (1-9)'
             }
         },
         editor: {
@@ -134,7 +135,8 @@ export const translations = {
                 settings: 'Open Settings',
                 closeModal: 'Close Modal',
                 save: 'Save File (.txt)',
-                open: 'Open File (.txt)'
+                open: 'Open File (.txt)',
+                speedSet: 'Set Scroll Speed (1-9)'
             }
         },
         editor: {
@@ -207,7 +209,8 @@ export const translations = {
                 settings: '設定を開く',
                 closeModal: '閉じる',
                 save: '保存 (.txt)',
-                open: '開く (.txt)'
+                open: '開く (.txt)',
+                speedSet: 'スクロール速度の設定 (1-9)'
             }
         },
         editor: {
@@ -280,7 +283,8 @@ export const translations = {
                 settings: '打开设置',
                 closeModal: '关闭',
                 save: '保存文件 (.txt)',
-                open: '打开文件 (.txt)'
+                open: '打开文件 (.txt)',
+                speedSet: '设置滚动速度 (1-9)'
             }
         },
         editor: {
@@ -353,7 +357,8 @@ export const translations = {
                 settings: 'Abrir Configuración',
                 closeModal: 'Cerrar Modal',
                 save: 'Guardar Archivo (.txt)',
-                open: 'Abrir Archivo (.txt)'
+                open: 'Abrir Archivo (.txt)',
+                speedSet: 'Ajustar velocidad (1-9)'
             }
         },
         editor: {
@@ -426,7 +431,8 @@ export const translations = {
                 settings: 'Ouvrir Paramètres',
                 closeModal: 'Fermer',
                 save: 'Enregistrer Fichier (.txt)',
-                open: 'Ouvrir Fichier (.txt)'
+                open: 'Ouvrir Fichier (.txt)',
+                speedSet: 'Régler la vitesse (1-9)'
             }
         },
         editor: {
@@ -499,7 +505,8 @@ export const translations = {
                 settings: 'Einstellungen Öffnen',
                 closeModal: 'Schließen',
                 save: 'Datei Speichern (.txt)',
-                open: 'Datei Öffnen (.txt)'
+                open: 'Datei Öffnen (.txt)',
+                speedSet: 'Geschwindigkeit einstellen (1-9)'
             }
         },
         editor: {
@@ -572,7 +579,8 @@ export const translations = {
                 settings: 'Apri Impostazioni',
                 closeModal: 'Chiudi',
                 save: 'Salva File (.txt)',
-                open: 'Apri File (.txt)'
+                open: 'Apri File (.txt)',
+                speedSet: 'Imposta velocità (1-9)'
             }
         },
         editor: {
@@ -645,7 +653,8 @@ export const translations = {
                 settings: 'Abrir Configurações',
                 closeModal: 'Fechar',
                 save: 'Salvar Arquivo (.txt)',
-                open: 'Abrir Arquivo (.txt)'
+                open: 'Abrir Arquivo (.txt)',
+                speedSet: 'Ajustar velocidade (1-9)'
             }
         },
         editor: {
@@ -718,7 +727,8 @@ export const translations = {
                 settings: 'Открыть настройки',
                 closeModal: 'Закрыть',
                 save: 'Сохранить (.txt)',
-                open: 'Открыть (.txt)'
+                open: 'Открыть (.txt)',
+                speedSet: 'Установить скорость (1-9)'
             }
         },
         editor: {
@@ -791,7 +801,8 @@ export const translations = {
                 settings: 'Mở Cài đặt',
                 closeModal: 'Đóng',
                 save: 'Lưu Tập tin (.txt)',
-                open: 'Mở Tập tin (.txt)'
+                open: 'Mở Tập tin (.txt)',
+                speedSet: 'Thiết lập tốc độ (1-9)'
             }
         },
         editor: {

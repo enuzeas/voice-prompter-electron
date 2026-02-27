@@ -230,6 +230,13 @@ const App = () => {
         });
         keyboardHandler.register('SAVE_FILE', handleFileSave);
 
+        // Speed control shortcuts
+        [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(speed => {
+            keyboardHandler.register(`SPEED_${speed}`, () => {
+                updateConfig({ manualSpeed: speed });
+            });
+        });
+
         keyboardHandler.start();
 
         return () => {

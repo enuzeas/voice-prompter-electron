@@ -15,6 +15,17 @@ const keyboardShortcuts = {
     // File operations
     OPEN_FILE: { key: 'o', ctrl: true, description: '파일 열기' },
     SAVE_FILE: { key: 's', ctrl: true, description: '파일 저장' },
+
+    // Speed control
+    SPEED_1: { key: '1', description: '속도 1' },
+    SPEED_2: { key: '2', description: '속도 2' },
+    SPEED_3: { key: '3', description: '속도 3' },
+    SPEED_4: { key: '4', description: '속도 4' },
+    SPEED_5: { key: '5', description: '속도 5' },
+    SPEED_6: { key: '6', description: '속도 6' },
+    SPEED_7: { key: '7', description: '속도 7' },
+    SPEED_8: { key: '8', description: '속도 8' },
+    SPEED_9: { key: '9', description: '속도 9' },
 };
 
 export default keyboardShortcuts;
