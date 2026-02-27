@@ -27,7 +27,7 @@ const useAudioLevel = (deviceId, isEnabled, targetRef) => {
             prevLevelRef.current = 0;
         };
 
-        if (!isEnabled || !deviceId || !targetRef) {
+        if (!isEnabled || !deviceId || deviceId === 'none' || !targetRef) {
             cleanup();
             if (targetRef?.current) {
                 targetRef.current.style.setProperty('--audio-level', '0');

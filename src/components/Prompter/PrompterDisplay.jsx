@@ -15,10 +15,13 @@ const PrompterDisplay = ({
     isMirrored,
     audioDeviceId,
     isListening,
-    onWordClick
+    onWordClick,
+    isPresentationWindow = false
 }) => {
     const audioGlowRef = useRef(null);
-    useAudioLevel(audioDeviceId, mode === 'voice' && isListening, audioGlowRef);
+    // Disable local microphone monitoring in presentation window to avoid hardware conflicts
+    const effectiveDeviceId = isPresentationWindow ? 'none' : audioDeviceId;
+    useAudioLevel(effectiveDeviceId, mode === 'voice' && isListening, audioGlowRef);
 
     return (
         <div

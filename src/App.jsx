@@ -65,10 +65,14 @@ const App = () => {
         }
     }, [config.language]);
 
-    // Speech recognition
+    // Local states for presentation side to reflect synced status without hardware access
+    const [remoteIsListening, setRemoteIsListening] = useState(false);
+    const [remoteIsPlaying, setRemoteIsPlaying] = useState(false);
+
+    // Speech recognition - Hardware active only in operator window
     const {
-        isListening,
-        activeIndex,
+        isListening: localIsListening,
+        activeIndex: localActiveIndex,
         error: speechError,
         wordRefs,
         toggleListening,
@@ -79,21 +83,38 @@ const App = () => {
         stopListening
     } = useSpeechRecognition(words, currentLanguage);
 
-    // Auto scroll
+    // Auto scroll - Hardware active only in operator window
     const {
-        isPlaying,
+        isPlaying: localIsPlaying,
         togglePlay,
         reset: resetScroll,
         play: startScroll,
         pause: stopScroll
     } = useAutoScroll(containerRef, manualSpeed);
 
+    // Effective states based on window type
+    const isListening = isPresentationWindow ? remoteIsListening : localIsListening;
+    const isPlaying = isPresentationWindow ? remoteIsPlaying : localIsPlaying;
+    const activeIndex = isPresentationWindow ? presentationActiveIndex : localActiveIndex;
+
     // Presentation mode synchronization
     const presentationCallbacks = useMemo(() => ({
         onSettingsUpdate: updateConfig,
         onModeUpdate: (newMode) => setMode(newMode),
-        onIsListeningUpdate: (listening) => listening ? startListening() : stopListening(),
-        onIsPlayingUpdate: (playing) => playing ? startScroll() : stopScroll(),
+        onIsListeningUpdate: (listening) => {
+            if (isPresentationWindow) {
+                setRemoteIsListening(listening);
+            } else {
+                listening ? startListening() : stopListening();
+            }
+        },
+        onIsPlayingUpdate: (playing) => {
+            if (isPresentationWindow) {
+                setRemoteIsPlaying(playing);
+            } else {
+                playing ? startScroll() : stopScroll();
+            }
+        },
         onScrollUpdate: (scrollTop) => {
             if (containerRef.current) {
                 // Use requestAnimationFrame to ensure smooth UI update
@@ -104,7 +125,7 @@ const App = () => {
                 });
             }
         }
-    }), [updateConfig, startListening, stopListening, startScroll, stopScroll]);
+    }), [updateConfig, isPresentationWindow, startListening, stopListening, startScroll, stopScroll]);
 
     const {
         isPresentationMode,
@@ -330,6 +351,7 @@ const App = () => {
                     isMirrored={isMirrored}
                     audioDeviceId={audioDeviceId}
                     isListening={isListening}
+                    isPresentationWindow={true}
                 />
             </div>
         );
