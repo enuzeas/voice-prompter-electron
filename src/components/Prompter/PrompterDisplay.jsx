@@ -43,7 +43,7 @@ const PrompterDisplay = ({
     return (
         <div ref={wrapperRef} className="flex-1 relative w-full h-full overflow-hidden">
             {/* Eye Level Guide (Anchored mathematically to exact center of wrapper) */}
-            <div className="absolute top-1/2 left-0 w-full z-20 pointer-events-none flex items-center justify-center transform -translate-y-1/2">
+            <div className="absolute top-1/2 left-0 w-full h-px bg-yellow-500/30 z-20 pointer-events-none flex items-center justify-center transform -translate-y-1/2">
                 <div ref={audioGlowRef} className="relative flex items-center justify-center">
                     {/* Audio Reactive Glow */}
                     {mode === 'voice' && isListening && (
