@@ -31,7 +31,7 @@ const PrompterDisplay = ({
         if (!wrapperRef.current) return;
 
         const observer = new ResizeObserver((entries) => {
-            if (entries[0]) {
+            if (entries[0] && wrapperRef.current) {
                 setContainerHeight(entries[0].contentRect.height);
             }
         });
@@ -70,7 +70,7 @@ const PrompterDisplay = ({
             {/* Scrolling Content Container */}
             <div
                 ref={containerRef}
-                className={`absolute inset-0 overflow-y-auto px-8 relative no-scrollbar ${isSerif ? 'font-serif' : 'font-sans'}`}
+                className={`absolute inset-0 overflow-y-auto px-8 no-scrollbar ${isSerif ? 'font-serif' : 'font-sans'}`}
                 style={{
                     maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
                     WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)'
