@@ -19,7 +19,18 @@ import defaultScripts from './constants/defaultScripts';
 
 const App = () => {
     // Mode and UI state
-    const [mode, setMode] = useState('voice');
+    const [mode, setMode] = useState(() => {
+        const isPresentation = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '').get('mode') === 'presentation';
+        if (isPresentation) {
+            try {
+                const savedState = localStorage.getItem('presentation-initial-state');
+                if (savedState) return JSON.parse(savedState).mode || 'voice';
+            } catch (e) {
+                console.error('Failed to parse initial state:', e);
+            }
+        }
+        return 'voice';
+    });
     const [showSettings, setShowSettings] = useState(false);
     const [showScriptEditor, setShowScriptEditor] = useState(false);
     const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
@@ -72,8 +83,28 @@ const App = () => {
     }, [config.language]);
 
     // Local states for presentation side to reflect synced status without hardware access
-    const [remoteIsListening, setRemoteIsListening] = useState(false);
-    const [remoteIsPlaying, setRemoteIsPlaying] = useState(false);
+    const [remoteIsListening, setRemoteIsListening] = useState(() => {
+        if (isPresentationWindow) {
+            try {
+                const savedState = localStorage.getItem('presentation-initial-state');
+                if (savedState) return JSON.parse(savedState).isListening || false;
+            } catch (e) {
+                console.error('Failed to parse initial state:', e);
+            }
+        }
+        return false;
+    });
+    const [remoteIsPlaying, setRemoteIsPlaying] = useState(() => {
+        if (isPresentationWindow) {
+            try {
+                const savedState = localStorage.getItem('presentation-initial-state');
+                if (savedState) return JSON.parse(savedState).isPlaying || false;
+            } catch (e) {
+                console.error('Failed to parse initial state:', e);
+            }
+        }
+        return false;
+    });
 
     // Speech recognition - Hardware active only in operator window
     const {

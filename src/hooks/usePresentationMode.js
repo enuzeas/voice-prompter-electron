@@ -12,7 +12,19 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
     });
 
     const [isPresentationMode, setIsPresentationMode] = useState(false);
-    const [presentationActiveIndex, setPresentationActiveIndex] = useState(0);
+    const [presentationActiveIndex, setPresentationActiveIndex] = useState(() => {
+        if (!isPresentationWindow) return 0;
+        try {
+            const savedState = localStorage.getItem('presentation-initial-state');
+            if (savedState) {
+                const parsedState = JSON.parse(savedState);
+                return parsedState.activeIndex || 0;
+            }
+        } catch (e) {
+            console.error('Failed to parse initial state:', e);
+        }
+        return 0;
+    });
     const presentationWindowRef = useRef(null);
 
     // Fullscreen for presentation window
@@ -59,6 +71,12 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
         // Store data in localStorage for presentation window to read (SHARED between windows/tabs/extension pages)
         localStorage.setItem('presentation-script', JSON.stringify(scriptData));
         localStorage.setItem('presentation-settings', JSON.stringify(settings));
+        localStorage.setItem('presentation-initial-state', JSON.stringify({
+            mode,
+            isListening,
+            isPlaying,
+            activeIndex
+        }));
 
         // Check if running as Chrome Extension
         const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
@@ -100,7 +118,7 @@ const usePresentationMode = (scriptData, settings, onSettingsUpdate, activeIndex
                 presentationService.sendUpdate('update-settings', settings); // Also sync initial settings
             }
         }
-    }, [settings, activeIndex]); // Added settings and activeIndex to dependencies for initial sync
+    }, [settings, activeIndex, mode, isListening, isPlaying]); // Added runtime states to dependencies for initial sync
 
     // Close presentation window
     const closePresentation = () => {
