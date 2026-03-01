@@ -84,3 +84,23 @@ export default languages;
 export const getLanguageByCode = (code) => {
     return languages.find(lang => lang.code === code) || languages[0];
 };
+
+export const getDefaultSystemLanguage = () => {
+    if (typeof window === 'undefined' || !window.navigator) {
+        return 'en-US';
+    }
+
+    const sysLang = window.navigator.language; // e.g. "ko-KR", "en-US", "ko"
+
+    // First try exact match
+    const exactMatch = languages.find(lang => lang.code === sysLang);
+    if (exactMatch) return exactMatch.code;
+
+    // Then try base language match (e.g. "ko" matches "ko-KR")
+    const baseLang = sysLang.split('-')[0];
+    const baseMatch = languages.find(lang => lang.code.startsWith(`${baseLang}-`));
+    if (baseMatch) return baseMatch.code;
+
+    // Default fallback
+    return 'en-US';
+};

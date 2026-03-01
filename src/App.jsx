@@ -14,6 +14,7 @@ import usePresentationMode from './hooks/usePresentationMode';
 import { processScriptToWords } from './utils/wordProcessing';
 import keyboardHandler from './utils/keyboardHandler';
 import { downloadTextFile } from './utils/fileHandler';
+import { getDefaultSystemLanguage } from './constants/languages';
 import defaultScript from './constants/defaultScript';
 import defaultScripts from './constants/defaultScripts';
 
@@ -33,7 +34,7 @@ const App = () => {
     });
     const [showSettings, setShowSettings] = useState(false);
     const [showScriptEditor, setShowScriptEditor] = useState(false);
-    const [currentLanguage, setCurrentLanguage] = useState('ko-KR');
+    const [currentLanguage, setCurrentLanguage] = useState(getDefaultSystemLanguage());
     const [showShortcutModal, setShowShortcutModal] = useState(true); // Default to true
     const [showAboutModal, setShowAboutModal] = useState(false);
 
@@ -63,7 +64,7 @@ const App = () => {
         isSerif: false,
         lineHeight: 1.6,
         manualSpeed: 3,
-        language: 'ko-KR',
+        language: getDefaultSystemLanguage(),
         audioDeviceId: 'default',
         isMirrored: false
     }, isPresentationWindow);
