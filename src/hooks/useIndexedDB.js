@@ -18,7 +18,10 @@ const useIndexedDB = (initialConfig, isPresentationWindow = false) => {
                     mergedConfig = { ...mergedConfig, ...JSON.parse(savedSettings) };
                 }
                 if (savedScript) {
-                    mergedConfig.scriptText = JSON.parse(savedScript);
+                    const parsedScript = JSON.parse(savedScript);
+                    mergedConfig.scriptText = (parsedScript && typeof parsedScript === 'object' && parsedScript.scriptText !== undefined)
+                        ? parsedScript.scriptText
+                        : parsedScript;
                 }
                 return mergedConfig;
             } catch (e) {
