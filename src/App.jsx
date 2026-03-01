@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { AlertCircle } from 'lucide-react';
 import Header from './components/Header/Header';
 import SettingsPanel from './components/Settings/SettingsPanel';
-import ScriptEditor from './components/ScriptEditor/ScriptEditor';
+import SidebarEditor from './components/ScriptEditor/SidebarEditor';
 import PrompterDisplay from './components/Prompter/PrompterDisplay';
 import ShortcutModal from './components/Help/ShortcutModal';
 import AboutModal from './components/Help/AboutModal';
@@ -257,11 +257,9 @@ const App = () => {
         }
     };
 
-    // Script save handler
-    const handleScriptSave = (newScript) => {
+    // Live script update handler
+    const handleScriptChange = (newScript) => {
         updateConfig({ scriptText: newScript });
-        setShowScriptEditor(false);
-        handleReset();
     };
 
     // Language change handler
@@ -437,56 +435,42 @@ const App = () => {
                 />
             )}
 
-            {/* Script Editor */}
-            <ScriptEditor
-                isOpen={showScriptEditor}
-                scriptText={scriptText}
-                onSave={handleScriptSave}
-                onClose={() => setShowScriptEditor(false)}
-                currentLanguage={currentLanguage}
-            />
+            {/* Main Content Area (Prompter + Sidebar Editor) */}
+            <div className="flex-1 flex overflow-hidden w-full relative">
+                {/* Prompter Display */}
+                <PrompterDisplay
+                    containerRef={containerRef}
+                    words={words}
+                    mode={mode}
+                    activeIndex={activeIndex}
+                    fontSize={fontSize}
+                    letterSpacing={letterSpacing}
+                    lineHeight={lineHeight}
+                    isSerif={isSerif}
+                    wordRefs={wordRefs}
+                    isMirrored={false} // Operator view always normal
+                    audioDeviceId={audioDeviceId}
+                    isListening={isListening}
+                    onWordClick={(index) => {
+                        if (mode === 'voice') {
+                            setSpeechIndex(index - 1); // Set to index before target to make target next
+                        }
+                    }}
+                />
 
-            {/* Shortcut Modal */}
-            <ShortcutModal
-                isOpen={showShortcutModal}
-                onClose={() => setShowShortcutModal(false)}
-                currentLanguage={currentLanguage}
-            />
-
-            {/* About Modal */}
-            <AboutModal
-                isOpen={showAboutModal}
-                onClose={() => setShowAboutModal(false)}
-                currentLanguage={currentLanguage}
-            />
-
-            {/* Error Message */}
-            {speechError && (
-                <div className="bg-red-900/50 text-red-200 px-4 py-2 text-sm flex items-center justify-center gap-2 z-20">
-                    <AlertCircle size={16} /> {speechError}
-                </div>
-            )}
-
-            {/* Prompter Display */}
-            <PrompterDisplay
-                containerRef={containerRef}
-                words={words}
-                mode={mode}
-                activeIndex={activeIndex}
-                fontSize={fontSize}
-                letterSpacing={letterSpacing}
-                lineHeight={lineHeight}
-                isSerif={isSerif}
-                wordRefs={wordRefs}
-                isMirrored={false} // Operator view always normal
-                audioDeviceId={audioDeviceId}
-                isListening={isListening}
-                onWordClick={(index) => {
-                    if (mode === 'voice') {
-                        setSpeechIndex(index - 1); // Set to index before target to make target next
-                    }
-                }}
-            />
+                {/* Side-by-Side Editor */}
+                <SidebarEditor
+                    isOpen={showScriptEditor}
+                    scriptText={scriptText}
+                    onChange={handleScriptChange}
+                    onClose={() => setShowScriptEditor(false)}
+                    currentLanguage={currentLanguage}
+                    fontSize={fontSize}
+                    letterSpacing={letterSpacing}
+                    lineHeight={lineHeight}
+                    isSerif={isSerif}
+                />
+            </div>
         </div>
     );
 };
