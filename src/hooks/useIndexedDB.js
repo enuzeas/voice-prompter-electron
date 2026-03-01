@@ -5,13 +5,35 @@ import { saveConfig, loadConfig } from '../services/indexedDB.service';
  * Custom hook for IndexedDB persistence
  * Automatically saves and loads configuration
  */
-const useIndexedDB = (initialConfig) => {
-    const [config, setConfig] = useState(initialConfig);
-    const [isLoading, setIsLoading] = useState(true);
+const useIndexedDB = (initialConfig, isPresentationWindow = false) => {
+    const [config, setConfig] = useState(() => {
+        if (isPresentationWindow) {
+            try {
+                // Synchronously initialize from localStorage to prevent race conditions
+                const savedSettings = localStorage.getItem('presentation-settings');
+                const savedScript = localStorage.getItem('presentation-script');
+
+                let mergedConfig = { ...initialConfig };
+                if (savedSettings) {
+                    mergedConfig = { ...mergedConfig, ...JSON.parse(savedSettings) };
+                }
+                if (savedScript) {
+                    mergedConfig.scriptText = JSON.parse(savedScript);
+                }
+                return mergedConfig;
+            } catch (e) {
+                console.error('Failed to parse presentation settings:', e);
+            }
+        }
+        return initialConfig;
+    });
+    const [isLoading, setIsLoading] = useState(!isPresentationWindow); // No loading required for presentation
     const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
 
-    // Load configuration on mount
+    // Load configuration on mount (Operator only)
     useEffect(() => {
+        if (isPresentationWindow) return; // Bypass for presentation
+
         const loadData = async () => {
             setIsLoading(true);
             try {
@@ -27,11 +49,11 @@ const useIndexedDB = (initialConfig) => {
         };
 
         loadData();
-    }, []);
+    }, [isPresentationWindow]);
 
-    // Auto-save configuration with debounce
+    // Auto-save configuration with debounce (Operator only)
     useEffect(() => {
-        if (isLoading) return; // Don't save during initial load
+        if (isPresentationWindow || isLoading) return; // Don't save for presentation or during initial load
 
         setSaveStatus('saving');
         const timer = setTimeout(async () => {
@@ -45,7 +67,7 @@ const useIndexedDB = (initialConfig) => {
         }, 1000); // 1 second debounce
 
         return () => clearTimeout(timer);
-    }, [config, isLoading]);
+    }, [config, isLoading, isPresentationWindow]);
 
     // Update configuration
     const updateConfig = useCallback((updates) => {

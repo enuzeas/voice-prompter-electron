@@ -49,6 +49,12 @@ const App = () => {
     const containerRef = useRef(null);
     const audioDeviceSelectorRef = useRef(null);
 
+    // Detect if current window is the presentation window (static)
+    const isPresentationWindow = useMemo(() => {
+        const urlParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+        return urlParams.get('mode') === 'presentation';
+    }, []);
+
     // IndexedDB persistence
     const { config, updateConfig, saveStatus } = useIndexedDB({
         scriptText: defaultScript,
@@ -60,19 +66,13 @@ const App = () => {
         language: 'ko-KR',
         audioDeviceId: 'default',
         isMirrored: false
-    });
+    }, isPresentationWindow);
 
     // Derived state from config
     const { scriptText, fontSize, letterSpacing, isSerif, lineHeight, manualSpeed, audioDeviceId, isMirrored } = config;
 
     // Process script to words
     const words = useMemo(() => processScriptToWords(scriptText, config.language), [scriptText, config.language]);
-
-    // Detect if current window is the presentation window (static)
-    const isPresentationWindow = useMemo(() => {
-        const urlParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
-        return urlParams.get('mode') === 'presentation';
-    }, []);
 
     // Sync currentLanguage with config.language when config loads
     useEffect(() => {
